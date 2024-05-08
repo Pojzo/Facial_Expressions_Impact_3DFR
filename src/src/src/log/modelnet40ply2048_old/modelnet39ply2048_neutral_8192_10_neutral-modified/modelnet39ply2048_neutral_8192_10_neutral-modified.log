@@ -1,0 +1,1983 @@
+[04/25 10:20:32] ModelNet40Ply2048 INFO: figures_path: C:/Users/pojzi/Programovanie/bakalarka/PointNeXt/examples/classification/log/modelnet40ply2048/modelnet39ply2048_neutral_8192_10_neutral-modified
+dist_url: tcp://localhost:8888
+dist_backend: nccl
+multiprocessing_distributed: False
+ngpus_per_node: 1
+world_size: 1
+launcher: mp
+local_rank: 0
+use_gpu: True
+seed: 5257
+epoch: 0
+epochs: 100
+ignore_index: None
+val_fn: validate
+deterministic: False
+sync_bn: False
+criterion_args:
+  NAME: SmoothCrossEntropy
+  label_smoothing: 0.2
+use_mask: False
+grad_norm_clip: 1
+layer_decay: 0
+step_per_update: 1
+start_epoch: 1
+sched_on_epoch: True
+wandb:
+  use_wandb: False
+  project: PointNeXt-ModelNet40Ply2048
+  tags: ['modelnet40ply2048', 'train', 'pointnext-s', 'ngpus1', 'seed5257']
+  name: modelnet39ply2048_neutral_8192_10_neutral-modified
+use_amp: False
+use_voting: False
+val_freq: 1
+resume: False
+test: False
+finetune: False
+mode: train
+logname: None
+load_path: None
+print_freq: 10
+save_freq: -1
+root_dir: log/modelnet40ply2048
+pretrained_path: None
+datatransforms:
+  train: ['PointsToTensor', 'PointCloudScaleAndTranslate']
+  val: ['PointsToTensor']
+  vote: ['PointCloudScaleAndTranslate']
+  kwargs:
+    shift: [0.2, 0.2, 0.2]
+feature_keys: pos
+num_points: 8192
+dataset:
+  common:
+    NAME: ModelNet40Ply2048
+    data_dir: ./data/ModelNet40Ply2048
+  train:
+    split: train
+    num_points: 1024
+  val:
+    split: test
+    num_points: 1024
+batch_size: 5
+dataloader:
+  num_workers: 6
+num_classes: 10
+sched: cosine
+warmup_epochs: 0
+min_lr: None
+lr: 0.001
+optimizer:
+  NAME: adamw
+  weight_decay: 0.05
+log_dir: log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified
+val_batch_size: 64
+model:
+  NAME: BaseCls
+  encoder_args:
+    NAME: PointNextEncoder
+    blocks: [1, 1, 1, 1, 1, 1]
+    strides: [1, 2, 2, 2, 2, 1]
+    width: 32
+    in_channels: 3
+    radius: 0.15
+    radius_scaling: 1.5
+    sa_layers: 2
+    sa_use_res: True
+    nsample: 32
+    expansion: 4
+    aggr_args:
+      feature_type: dp_fj
+      reduction: max
+    group_args:
+      NAME: ballquery
+      normalize_dp: True
+    conv_args:
+      order: conv-norm-act
+    act_args:
+      act: relu
+    norm_args:
+      norm: bn
+  cls_args:
+    NAME: ClsHead
+    num_classes: 10
+    mlps: [512, 256]
+    norm_args:
+      norm: bn1d
+train_mode: neutral-modified
+run_name: modelnet39ply2048_neutral_8192_10_neutral-modified
+rank: 0
+distributed: False
+mp: False
+task_name: modelnet40ply2048
+exp_name: pointnext-s
+opts: 
+run_dir: log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified
+exp_dir: log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified
+ckpt_dir: log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint
+log_path: log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\modelnet39ply2048_neutral_8192_10_neutral-modified.log
+cfg_path: log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\cfg.yaml
+[04/25 10:20:32] ModelNet40Ply2048 INFO: radius: [[0.15], [0.15], [0.22499999999999998], [0.33749999999999997], [0.50625], [0.7593749999999999]],
+ nsample: [[32], [32], [32], [32], [32], [32]]
+[04/25 10:20:32] ModelNet40Ply2048 INFO: NAME: ballquery
+normalize_dp: True
+radius: 0.15
+nsample: 32
+[04/25 10:20:32] ModelNet40Ply2048 INFO: NAME: ballquery
+normalize_dp: True
+radius: 0.22499999999999998
+nsample: 32
+[04/25 10:20:32] ModelNet40Ply2048 INFO: NAME: ballquery
+normalize_dp: True
+radius: 0.33749999999999997
+nsample: 32
+[04/25 10:20:32] ModelNet40Ply2048 INFO: NAME: ballquery
+normalize_dp: True
+radius: 0.50625
+nsample: 32
+[04/25 10:20:32] ModelNet40Ply2048 INFO: NAME: ballquery
+normalize_dp: True
+radius: None
+nsample: None
+[04/25 10:20:32] ModelNet40Ply2048 INFO: BaseCls(
+  (encoder): PointNextEncoder(
+    (encoder): Sequential(
+      (0): Sequential(
+        (0): SetAbstraction(
+          (convs): Sequential(
+            (0): Sequential(
+              (0): Conv1d(3, 32, kernel_size=(1,), stride=(1,))
+            )
+          )
+        )
+      )
+      (1): Sequential(
+        (0): SetAbstraction(
+          (skipconv): Sequential(
+            (0): Conv1d(32, 64, kernel_size=(1,), stride=(1,))
+          )
+          (act): ReLU(inplace=True)
+          (convs): Sequential(
+            (0): Sequential(
+              (0): Conv2d(35, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+            (1): Sequential(
+              (0): Conv2d(32, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            )
+          )
+          (grouper): QueryAndGroup()
+        )
+      )
+      (2): Sequential(
+        (0): SetAbstraction(
+          (skipconv): Sequential(
+            (0): Conv1d(64, 128, kernel_size=(1,), stride=(1,))
+          )
+          (act): ReLU(inplace=True)
+          (convs): Sequential(
+            (0): Sequential(
+              (0): Conv2d(67, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+            (1): Sequential(
+              (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            )
+          )
+          (grouper): QueryAndGroup()
+        )
+      )
+      (3): Sequential(
+        (0): SetAbstraction(
+          (skipconv): Sequential(
+            (0): Conv1d(128, 256, kernel_size=(1,), stride=(1,))
+          )
+          (act): ReLU(inplace=True)
+          (convs): Sequential(
+            (0): Sequential(
+              (0): Conv2d(131, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+            (1): Sequential(
+              (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            )
+          )
+          (grouper): QueryAndGroup()
+        )
+      )
+      (4): Sequential(
+        (0): SetAbstraction(
+          (skipconv): Sequential(
+            (0): Conv1d(256, 512, kernel_size=(1,), stride=(1,))
+          )
+          (act): ReLU(inplace=True)
+          (convs): Sequential(
+            (0): Sequential(
+              (0): Conv2d(259, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+            (1): Sequential(
+              (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            )
+          )
+          (grouper): QueryAndGroup()
+        )
+      )
+      (5): Sequential(
+        (0): SetAbstraction(
+          (convs): Sequential(
+            (0): Sequential(
+              (0): Conv2d(515, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+            (1): Sequential(
+              (0): Conv2d(512, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (grouper): GroupAll()
+        )
+      )
+    )
+  )
+  (prediction): ClsHead(
+    (head): Sequential(
+      (0): Sequential(
+        (0): Linear(in_features=512, out_features=512, bias=False)
+        (1): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+      )
+      (1): Dropout(p=0.5, inplace=False)
+      (2): Sequential(
+        (0): Linear(in_features=512, out_features=256, bias=False)
+        (1): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+      )
+      (3): Dropout(p=0.5, inplace=False)
+      (4): Sequential(
+        (0): Linear(in_features=256, out_features=10, bias=True)
+      )
+    )
+  )
+  (criterion): SmoothCrossEntropy()
+)
+[04/25 10:20:32] ModelNet40Ply2048 INFO: Number of params: 1.3658 M
+[04/25 10:20:32] ModelNet40Ply2048 INFO: Param groups = {
+  "decay": {
+    "weight_decay": 0.05,
+    "params": [
+      "encoder.encoder.0.0.convs.0.0.weight",
+      "encoder.encoder.1.0.skipconv.0.weight",
+      "encoder.encoder.1.0.convs.0.0.weight",
+      "encoder.encoder.1.0.convs.1.0.weight",
+      "encoder.encoder.2.0.skipconv.0.weight",
+      "encoder.encoder.2.0.convs.0.0.weight",
+      "encoder.encoder.2.0.convs.1.0.weight",
+      "encoder.encoder.3.0.skipconv.0.weight",
+      "encoder.encoder.3.0.convs.0.0.weight",
+      "encoder.encoder.3.0.convs.1.0.weight",
+      "encoder.encoder.4.0.skipconv.0.weight",
+      "encoder.encoder.4.0.convs.0.0.weight",
+      "encoder.encoder.4.0.convs.1.0.weight",
+      "encoder.encoder.5.0.convs.0.0.weight",
+      "encoder.encoder.5.0.convs.1.0.weight",
+      "prediction.head.0.0.weight",
+      "prediction.head.2.0.weight",
+      "prediction.head.4.0.weight"
+    ],
+    "lr_scale": 1.0
+  },
+  "no_decay": {
+    "weight_decay": 0.0,
+    "params": [
+      "encoder.encoder.0.0.convs.0.0.bias",
+      "encoder.encoder.1.0.skipconv.0.bias",
+      "encoder.encoder.1.0.convs.0.1.weight",
+      "encoder.encoder.1.0.convs.0.1.bias",
+      "encoder.encoder.1.0.convs.1.1.weight",
+      "encoder.encoder.1.0.convs.1.1.bias",
+      "encoder.encoder.2.0.skipconv.0.bias",
+      "encoder.encoder.2.0.convs.0.1.weight",
+      "encoder.encoder.2.0.convs.0.1.bias",
+      "encoder.encoder.2.0.convs.1.1.weight",
+      "encoder.encoder.2.0.convs.1.1.bias",
+      "encoder.encoder.3.0.skipconv.0.bias",
+      "encoder.encoder.3.0.convs.0.1.weight",
+      "encoder.encoder.3.0.convs.0.1.bias",
+      "encoder.encoder.3.0.convs.1.1.weight",
+      "encoder.encoder.3.0.convs.1.1.bias",
+      "encoder.encoder.4.0.skipconv.0.bias",
+      "encoder.encoder.4.0.convs.0.1.weight",
+      "encoder.encoder.4.0.convs.0.1.bias",
+      "encoder.encoder.4.0.convs.1.1.weight",
+      "encoder.encoder.4.0.convs.1.1.bias",
+      "encoder.encoder.5.0.convs.0.1.weight",
+      "encoder.encoder.5.0.convs.0.1.bias",
+      "encoder.encoder.5.0.convs.1.1.weight",
+      "encoder.encoder.5.0.convs.1.1.bias",
+      "prediction.head.0.1.weight",
+      "prediction.head.0.1.bias",
+      "prediction.head.2.1.weight",
+      "prediction.head.2.1.bias",
+      "prediction.head.4.0.bias"
+    ],
+    "lr_scale": 1.0
+  }
+}
+[04/25 10:20:36] ModelNet40Ply2048 INFO: number of classes of the dataset: 10, number of points sampled from dataset: 1024, number of points as model input: 8192
+[04/25 10:20:36] ModelNet40Ply2048 INFO: Training from scratch
+[04/25 10:20:36] ModelNet40Ply2048 INFO: length of training dataset: 10
+[04/25 10:20:37] ModelNet40Ply2048 INFO: Find a better ckpt @E1
+[04/25 10:20:37] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 0.00%
+CFD-AF-207-023-N: 0.00%
+CFD-AF-233-190-N: 0.00%
+CFD-AF-237-223-N: 100.00%
+CFD-AF-245-143-N: 0.00%
+CFD-AF-251-093-N: 0.00%
+CFD-AM-225-102-N: 0.00%
+CFD-AM-234-355-N: 0.00%
+CFD-BF-015-004-N: 0.00%
+CFD-BF-016-017-N: 0.00%
+E@1	OA: 10.00	mAcc: 10.00
+
+[04/25 10:20:37] ModelNet40Ply2048 INFO: Epoch 1 LR 0.001000 train_oa 0.00, val_oa 10.00, best val oa 10.00
+[04/25 10:20:38] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_8192_10_neutral-modified_ckpt_best.pth
+[04/25 10:20:39] ModelNet40Ply2048 INFO: Epoch 2 LR 0.001000 train_oa 20.00, val_oa 10.00, best val oa 10.00
+[04/25 10:20:40] ModelNet40Ply2048 INFO: Epoch 3 LR 0.000999 train_oa 30.00, val_oa 10.00, best val oa 10.00
+[04/25 10:20:41] ModelNet40Ply2048 INFO: Find a better ckpt @E4
+[04/25 10:20:41] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 0.00%
+CFD-AF-207-023-N: 0.00%
+CFD-AF-233-190-N: 0.00%
+CFD-AF-237-223-N: 100.00%
+CFD-AF-245-143-N: 0.00%
+CFD-AF-251-093-N: 0.00%
+CFD-AM-225-102-N: 0.00%
+CFD-AM-234-355-N: 0.00%
+CFD-BF-015-004-N: 12.50%
+CFD-BF-016-017-N: 0.00%
+E@4	OA: 11.25	mAcc: 11.25
+
+[04/25 10:20:41] ModelNet40Ply2048 INFO: Epoch 4 LR 0.000998 train_oa 20.00, val_oa 11.25, best val oa 11.25
+[04/25 10:20:41] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_8192_10_neutral-modified_ckpt_best.pth
+[04/25 10:20:42] ModelNet40Ply2048 INFO: Epoch 5 LR 0.000996 train_oa 80.00, val_oa 10.00, best val oa 11.25
+[04/25 10:20:43] ModelNet40Ply2048 INFO: Epoch 6 LR 0.000994 train_oa 60.00, val_oa 10.00, best val oa 11.25
+[04/25 10:20:44] ModelNet40Ply2048 INFO: Epoch 7 LR 0.000991 train_oa 60.00, val_oa 10.00, best val oa 11.25
+[04/25 10:20:45] ModelNet40Ply2048 INFO: Epoch 8 LR 0.000988 train_oa 50.00, val_oa 10.00, best val oa 11.25
+[04/25 10:20:46] ModelNet40Ply2048 INFO: Epoch 9 LR 0.000984 train_oa 90.00, val_oa 10.00, best val oa 11.25
+[04/25 10:20:47] ModelNet40Ply2048 INFO: Epoch 10 LR 0.000980 train_oa 100.00, val_oa 10.00, best val oa 11.25
+[04/25 10:20:48] ModelNet40Ply2048 INFO: Epoch 11 LR 0.000976 train_oa 90.00, val_oa 10.00, best val oa 11.25
+[04/25 10:20:49] ModelNet40Ply2048 INFO: Epoch 12 LR 0.000970 train_oa 100.00, val_oa 10.00, best val oa 11.25
+[04/25 10:20:50] ModelNet40Ply2048 INFO: Epoch 13 LR 0.000965 train_oa 100.00, val_oa 10.00, best val oa 11.25
+[04/25 10:20:51] ModelNet40Ply2048 INFO: Epoch 14 LR 0.000959 train_oa 100.00, val_oa 10.00, best val oa 11.25
+[04/25 10:20:52] ModelNet40Ply2048 INFO: Epoch 15 LR 0.000952 train_oa 100.00, val_oa 10.00, best val oa 11.25
+[04/25 10:20:53] ModelNet40Ply2048 INFO: Epoch 16 LR 0.000946 train_oa 100.00, val_oa 10.00, best val oa 11.25
+[04/25 10:20:54] ModelNet40Ply2048 INFO: Epoch 17 LR 0.000938 train_oa 100.00, val_oa 10.00, best val oa 11.25
+[04/25 10:20:56] ModelNet40Ply2048 INFO: Epoch 18 LR 0.000930 train_oa 100.00, val_oa 10.00, best val oa 11.25
+[04/25 10:20:57] ModelNet40Ply2048 INFO: Epoch 19 LR 0.000922 train_oa 100.00, val_oa 10.00, best val oa 11.25
+[04/25 10:20:58] ModelNet40Ply2048 INFO: Epoch 20 LR 0.000914 train_oa 100.00, val_oa 10.00, best val oa 11.25
+[04/25 10:20:59] ModelNet40Ply2048 INFO: Epoch 21 LR 0.000905 train_oa 90.00, val_oa 10.00, best val oa 11.25
+[04/25 10:21:00] ModelNet40Ply2048 INFO: Epoch 22 LR 0.000895 train_oa 100.00, val_oa 10.00, best val oa 11.25
+[04/25 10:21:01] ModelNet40Ply2048 INFO: Epoch 23 LR 0.000885 train_oa 100.00, val_oa 10.00, best val oa 11.25
+[04/25 10:21:02] ModelNet40Ply2048 INFO: Find a better ckpt @E24
+[04/25 10:21:02] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 25.00%
+CFD-AF-207-023-N: 0.00%
+CFD-AF-233-190-N: 0.00%
+CFD-AF-237-223-N: 0.00%
+CFD-AF-245-143-N: 0.00%
+CFD-AF-251-093-N: 37.50%
+CFD-AM-225-102-N: 0.00%
+CFD-AM-234-355-N: 0.00%
+CFD-BF-015-004-N: 75.00%
+CFD-BF-016-017-N: 0.00%
+E@24	OA: 13.75	mAcc: 13.75
+
+[04/25 10:21:02] ModelNet40Ply2048 INFO: Epoch 24 LR 0.000875 train_oa 100.00, val_oa 13.75, best val oa 13.75
+[04/25 10:21:02] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_8192_10_neutral-modified_ckpt_best.pth
+[04/25 10:21:03] ModelNet40Ply2048 INFO: Find a better ckpt @E25
+[04/25 10:21:03] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 25.00%
+CFD-AF-207-023-N: 0.00%
+CFD-AF-233-190-N: 12.50%
+CFD-AF-237-223-N: 0.00%
+CFD-AF-245-143-N: 0.00%
+CFD-AF-251-093-N: 62.50%
+CFD-AM-225-102-N: 0.00%
+CFD-AM-234-355-N: 0.00%
+CFD-BF-015-004-N: 50.00%
+CFD-BF-016-017-N: 0.00%
+E@25	OA: 15.00	mAcc: 15.00
+
+[04/25 10:21:03] ModelNet40Ply2048 INFO: Epoch 25 LR 0.000865 train_oa 100.00, val_oa 15.00, best val oa 15.00
+[04/25 10:21:03] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_8192_10_neutral-modified_ckpt_best.pth
+[04/25 10:21:04] ModelNet40Ply2048 INFO: Epoch 26 LR 0.000854 train_oa 100.00, val_oa 12.50, best val oa 15.00
+[04/25 10:21:05] ModelNet40Ply2048 INFO: Epoch 27 LR 0.000842 train_oa 100.00, val_oa 12.50, best val oa 15.00
+[04/25 10:21:06] ModelNet40Ply2048 INFO: Epoch 28 LR 0.000831 train_oa 100.00, val_oa 13.75, best val oa 15.00
+[04/25 10:21:07] ModelNet40Ply2048 INFO: Epoch 29 LR 0.000819 train_oa 100.00, val_oa 13.75, best val oa 15.00
+[04/25 10:21:08] ModelNet40Ply2048 INFO: Epoch 30 LR 0.000807 train_oa 100.00, val_oa 15.00, best val oa 15.00
+[04/25 10:21:09] ModelNet40Ply2048 INFO: Epoch 31 LR 0.000794 train_oa 100.00, val_oa 15.00, best val oa 15.00
+[04/25 10:21:10] ModelNet40Ply2048 INFO: Find a better ckpt @E32
+[04/25 10:21:10] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 37.50%
+CFD-AF-207-023-N: 0.00%
+CFD-AF-233-190-N: 12.50%
+CFD-AF-237-223-N: 0.00%
+CFD-AF-245-143-N: 0.00%
+CFD-AF-251-093-N: 62.50%
+CFD-AM-225-102-N: 0.00%
+CFD-AM-234-355-N: 0.00%
+CFD-BF-015-004-N: 12.50%
+CFD-BF-016-017-N: 62.50%
+E@32	OA: 18.75	mAcc: 18.75
+
+[04/25 10:21:10] ModelNet40Ply2048 INFO: Epoch 32 LR 0.000781 train_oa 100.00, val_oa 18.75, best val oa 18.75
+[04/25 10:21:11] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_8192_10_neutral-modified_ckpt_best.pth
+[04/25 10:21:12] ModelNet40Ply2048 INFO: Epoch 33 LR 0.000768 train_oa 100.00, val_oa 16.25, best val oa 18.75
+[04/25 10:21:13] ModelNet40Ply2048 INFO: Find a better ckpt @E34
+[04/25 10:21:13] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 12.50%
+CFD-AF-207-023-N: 0.00%
+CFD-AF-233-190-N: 37.50%
+CFD-AF-237-223-N: 0.00%
+CFD-AF-245-143-N: 0.00%
+CFD-AF-251-093-N: 50.00%
+CFD-AM-225-102-N: 0.00%
+CFD-AM-234-355-N: 0.00%
+CFD-BF-015-004-N: 37.50%
+CFD-BF-016-017-N: 100.00%
+E@34	OA: 23.75	mAcc: 23.75
+
+[04/25 10:21:13] ModelNet40Ply2048 INFO: Epoch 34 LR 0.000755 train_oa 100.00, val_oa 23.75, best val oa 23.75
+[04/25 10:21:13] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_8192_10_neutral-modified_ckpt_best.pth
+[04/25 10:21:14] ModelNet40Ply2048 INFO: Epoch 35 LR 0.000741 train_oa 100.00, val_oa 22.50, best val oa 23.75
+[04/25 10:21:15] ModelNet40Ply2048 INFO: Find a better ckpt @E36
+[04/25 10:21:15] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 25.00%
+CFD-AF-207-023-N: 0.00%
+CFD-AF-233-190-N: 25.00%
+CFD-AF-237-223-N: 0.00%
+CFD-AF-245-143-N: 12.50%
+CFD-AF-251-093-N: 37.50%
+CFD-AM-225-102-N: 0.00%
+CFD-AM-234-355-N: 0.00%
+CFD-BF-015-004-N: 62.50%
+CFD-BF-016-017-N: 100.00%
+E@36	OA: 26.25	mAcc: 26.25
+
+[04/25 10:21:15] ModelNet40Ply2048 INFO: Epoch 36 LR 0.000727 train_oa 100.00, val_oa 26.25, best val oa 26.25
+[04/25 10:21:15] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_8192_10_neutral-modified_ckpt_best.pth
+[04/25 10:21:16] ModelNet40Ply2048 INFO: Find a better ckpt @E37
+[04/25 10:21:16] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 0.00%
+CFD-AF-207-023-N: 12.50%
+CFD-AF-233-190-N: 50.00%
+CFD-AF-237-223-N: 0.00%
+CFD-AF-245-143-N: 0.00%
+CFD-AF-251-093-N: 37.50%
+CFD-AM-225-102-N: 0.00%
+CFD-AM-234-355-N: 0.00%
+CFD-BF-015-004-N: 75.00%
+CFD-BF-016-017-N: 100.00%
+E@37	OA: 27.50	mAcc: 27.50
+
+[04/25 10:21:16] ModelNet40Ply2048 INFO: Epoch 37 LR 0.000713 train_oa 100.00, val_oa 27.50, best val oa 27.50
+[04/25 10:21:16] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_8192_10_neutral-modified_ckpt_best.pth
+[04/25 10:21:17] ModelNet40Ply2048 INFO: Epoch 38 LR 0.000699 train_oa 100.00, val_oa 26.25, best val oa 27.50
+[04/25 10:21:18] ModelNet40Ply2048 INFO: Epoch 39 LR 0.000684 train_oa 100.00, val_oa 23.75, best val oa 27.50
+[04/25 10:21:19] ModelNet40Ply2048 INFO: Epoch 40 LR 0.000670 train_oa 100.00, val_oa 23.75, best val oa 27.50
+[04/25 10:21:20] ModelNet40Ply2048 INFO: Find a better ckpt @E41
+[04/25 10:21:20] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 0.00%
+CFD-AF-207-023-N: 12.50%
+CFD-AF-233-190-N: 37.50%
+CFD-AF-237-223-N: 25.00%
+CFD-AF-245-143-N: 12.50%
+CFD-AF-251-093-N: 25.00%
+CFD-AM-225-102-N: 25.00%
+CFD-AM-234-355-N: 12.50%
+CFD-BF-015-004-N: 50.00%
+CFD-BF-016-017-N: 100.00%
+E@41	OA: 30.00	mAcc: 30.00
+
+[04/25 10:21:20] ModelNet40Ply2048 INFO: Epoch 41 LR 0.000655 train_oa 100.00, val_oa 30.00, best val oa 30.00
+[04/25 10:21:20] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_8192_10_neutral-modified_ckpt_best.pth
+[04/25 10:21:21] ModelNet40Ply2048 INFO: Epoch 42 LR 0.000640 train_oa 100.00, val_oa 30.00, best val oa 30.00
+[04/25 10:21:22] ModelNet40Ply2048 INFO: Epoch 43 LR 0.000625 train_oa 100.00, val_oa 28.75, best val oa 30.00
+[04/25 10:21:23] ModelNet40Ply2048 INFO: Epoch 44 LR 0.000609 train_oa 100.00, val_oa 27.50, best val oa 30.00
+[04/25 10:21:25] ModelNet40Ply2048 INFO: Find a better ckpt @E45
+[04/25 10:21:25] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 0.00%
+CFD-AF-207-023-N: 25.00%
+CFD-AF-233-190-N: 12.50%
+CFD-AF-237-223-N: 50.00%
+CFD-AF-245-143-N: 25.00%
+CFD-AF-251-093-N: 12.50%
+CFD-AM-225-102-N: 50.00%
+CFD-AM-234-355-N: 25.00%
+CFD-BF-015-004-N: 37.50%
+CFD-BF-016-017-N: 100.00%
+E@45	OA: 33.75	mAcc: 33.75
+
+[04/25 10:21:25] ModelNet40Ply2048 INFO: Epoch 45 LR 0.000594 train_oa 100.00, val_oa 33.75, best val oa 33.75
+[04/25 10:21:25] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_8192_10_neutral-modified_ckpt_best.pth
+[04/25 10:21:26] ModelNet40Ply2048 INFO: Epoch 46 LR 0.000579 train_oa 90.00, val_oa 26.25, best val oa 33.75
+[04/25 10:21:27] ModelNet40Ply2048 INFO: Epoch 47 LR 0.000563 train_oa 100.00, val_oa 25.00, best val oa 33.75
+[04/25 10:21:28] ModelNet40Ply2048 INFO: Epoch 48 LR 0.000548 train_oa 100.00, val_oa 27.50, best val oa 33.75
+[04/25 10:21:29] ModelNet40Ply2048 INFO: Epoch 49 LR 0.000532 train_oa 100.00, val_oa 30.00, best val oa 33.75
+[04/25 10:21:30] ModelNet40Ply2048 INFO: Epoch 50 LR 0.000516 train_oa 100.00, val_oa 23.75, best val oa 33.75
+[04/25 10:21:31] ModelNet40Ply2048 INFO: Epoch 51 LR 0.000501 train_oa 100.00, val_oa 26.25, best val oa 33.75
+[04/25 10:21:32] ModelNet40Ply2048 INFO: Epoch 52 LR 0.000485 train_oa 100.00, val_oa 26.25, best val oa 33.75
+[04/25 10:21:33] ModelNet40Ply2048 INFO: Epoch 53 LR 0.000469 train_oa 100.00, val_oa 27.50, best val oa 33.75
+[04/25 10:21:34] ModelNet40Ply2048 INFO: Epoch 54 LR 0.000453 train_oa 100.00, val_oa 25.00, best val oa 33.75
+[04/25 10:21:35] ModelNet40Ply2048 INFO: Epoch 55 LR 0.000438 train_oa 100.00, val_oa 23.75, best val oa 33.75
+[04/25 10:21:36] ModelNet40Ply2048 INFO: Epoch 56 LR 0.000422 train_oa 100.00, val_oa 25.00, best val oa 33.75
+[04/25 10:21:37] ModelNet40Ply2048 INFO: Epoch 57 LR 0.000407 train_oa 100.00, val_oa 28.75, best val oa 33.75
+[04/25 10:21:38] ModelNet40Ply2048 INFO: Epoch 58 LR 0.000392 train_oa 100.00, val_oa 28.75, best val oa 33.75
+[04/25 10:21:39] ModelNet40Ply2048 INFO: Epoch 59 LR 0.000376 train_oa 100.00, val_oa 28.75, best val oa 33.75
+[04/25 10:21:40] ModelNet40Ply2048 INFO: Epoch 60 LR 0.000361 train_oa 100.00, val_oa 28.75, best val oa 33.75
+[04/25 10:21:42] ModelNet40Ply2048 INFO: Epoch 61 LR 0.000346 train_oa 100.00, val_oa 30.00, best val oa 33.75
+[04/25 10:21:43] ModelNet40Ply2048 INFO: Epoch 62 LR 0.000331 train_oa 100.00, val_oa 30.00, best val oa 33.75
+[04/25 10:21:44] ModelNet40Ply2048 INFO: Epoch 63 LR 0.000317 train_oa 100.00, val_oa 27.50, best val oa 33.75
+[04/25 10:21:45] ModelNet40Ply2048 INFO: Epoch 64 LR 0.000302 train_oa 100.00, val_oa 32.50, best val oa 33.75
+[04/25 10:21:46] ModelNet40Ply2048 INFO: Epoch 65 LR 0.000288 train_oa 100.00, val_oa 31.25, best val oa 33.75
+[04/25 10:21:47] ModelNet40Ply2048 INFO: Epoch 66 LR 0.000274 train_oa 100.00, val_oa 31.25, best val oa 33.75
+[04/25 10:21:48] ModelNet40Ply2048 INFO: Find a better ckpt @E67
+[04/25 10:21:48] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 37.50%
+CFD-AF-207-023-N: 12.50%
+CFD-AF-233-190-N: 0.00%
+CFD-AF-237-223-N: 75.00%
+CFD-AF-245-143-N: 25.00%
+CFD-AF-251-093-N: 0.00%
+CFD-AM-225-102-N: 37.50%
+CFD-AM-234-355-N: 12.50%
+CFD-BF-015-004-N: 50.00%
+CFD-BF-016-017-N: 100.00%
+E@67	OA: 35.00	mAcc: 35.00
+
+[04/25 10:21:48] ModelNet40Ply2048 INFO: Epoch 67 LR 0.000260 train_oa 100.00, val_oa 35.00, best val oa 35.00
+[04/25 10:21:48] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_8192_10_neutral-modified_ckpt_best.pth
+[04/25 10:21:49] ModelNet40Ply2048 INFO: Epoch 68 LR 0.000246 train_oa 100.00, val_oa 33.75, best val oa 35.00
+[04/25 10:21:50] ModelNet40Ply2048 INFO: Epoch 69 LR 0.000233 train_oa 100.00, val_oa 30.00, best val oa 35.00
+[04/25 10:21:51] ModelNet40Ply2048 INFO: Epoch 70 LR 0.000220 train_oa 100.00, val_oa 27.50, best val oa 35.00
+[04/25 10:21:52] ModelNet40Ply2048 INFO: Epoch 71 LR 0.000207 train_oa 100.00, val_oa 28.75, best val oa 35.00
+[04/25 10:21:53] ModelNet40Ply2048 INFO: Epoch 72 LR 0.000194 train_oa 100.00, val_oa 27.50, best val oa 35.00
+[04/25 10:21:54] ModelNet40Ply2048 INFO: Epoch 73 LR 0.000182 train_oa 100.00, val_oa 33.75, best val oa 35.00
+[04/25 10:21:55] ModelNet40Ply2048 INFO: Epoch 74 LR 0.000170 train_oa 100.00, val_oa 32.50, best val oa 35.00
+[04/25 10:21:56] ModelNet40Ply2048 INFO: Epoch 75 LR 0.000159 train_oa 100.00, val_oa 30.00, best val oa 35.00
+[04/25 10:21:57] ModelNet40Ply2048 INFO: Epoch 76 LR 0.000147 train_oa 100.00, val_oa 27.50, best val oa 35.00
+[04/25 10:21:59] ModelNet40Ply2048 INFO: Epoch 77 LR 0.000136 train_oa 100.00, val_oa 23.75, best val oa 35.00
+[04/25 10:22:00] ModelNet40Ply2048 INFO: Epoch 78 LR 0.000126 train_oa 100.00, val_oa 30.00, best val oa 35.00
+[04/25 10:22:01] ModelNet40Ply2048 INFO: Epoch 79 LR 0.000116 train_oa 100.00, val_oa 31.25, best val oa 35.00
+[04/25 10:22:02] ModelNet40Ply2048 INFO: Epoch 80 LR 0.000106 train_oa 100.00, val_oa 32.50, best val oa 35.00
+[04/25 10:22:03] ModelNet40Ply2048 INFO: Epoch 81 LR 0.000096 train_oa 100.00, val_oa 26.25, best val oa 35.00
+[04/25 10:22:04] ModelNet40Ply2048 INFO: Epoch 82 LR 0.000087 train_oa 100.00, val_oa 32.50, best val oa 35.00
+[04/25 10:22:05] ModelNet40Ply2048 INFO: Epoch 83 LR 0.000079 train_oa 100.00, val_oa 31.25, best val oa 35.00
+[04/25 10:22:06] ModelNet40Ply2048 INFO: Epoch 84 LR 0.000071 train_oa 100.00, val_oa 28.75, best val oa 35.00
+[04/25 10:22:07] ModelNet40Ply2048 INFO: Epoch 85 LR 0.000063 train_oa 100.00, val_oa 35.00, best val oa 35.00
+[04/25 10:22:08] ModelNet40Ply2048 INFO: Epoch 86 LR 0.000055 train_oa 100.00, val_oa 31.25, best val oa 35.00
+[04/25 10:22:09] ModelNet40Ply2048 INFO: Epoch 87 LR 0.000049 train_oa 100.00, val_oa 28.75, best val oa 35.00
+[04/25 10:22:10] ModelNet40Ply2048 INFO: Epoch 88 LR 0.000042 train_oa 100.00, val_oa 28.75, best val oa 35.00
+[04/25 10:22:11] ModelNet40Ply2048 INFO: Epoch 89 LR 0.000036 train_oa 100.00, val_oa 28.75, best val oa 35.00
+[04/25 10:22:12] ModelNet40Ply2048 INFO: Epoch 90 LR 0.000031 train_oa 100.00, val_oa 31.25, best val oa 35.00
+[04/25 10:22:13] ModelNet40Ply2048 INFO: Epoch 91 LR 0.000025 train_oa 100.00, val_oa 28.75, best val oa 35.00
+[04/25 10:22:14] ModelNet40Ply2048 INFO: Epoch 92 LR 0.000021 train_oa 100.00, val_oa 28.75, best val oa 35.00
+[04/25 10:22:15] ModelNet40Ply2048 INFO: Epoch 93 LR 0.000017 train_oa 100.00, val_oa 30.00, best val oa 35.00
+[04/25 10:22:17] ModelNet40Ply2048 INFO: Epoch 94 LR 0.000013 train_oa 100.00, val_oa 27.50, best val oa 35.00
+[04/25 10:22:18] ModelNet40Ply2048 INFO: Epoch 95 LR 0.000010 train_oa 100.00, val_oa 25.00, best val oa 35.00
+[04/25 10:22:19] ModelNet40Ply2048 INFO: Epoch 96 LR 0.000007 train_oa 100.00, val_oa 26.25, best val oa 35.00
+[04/25 10:22:20] ModelNet40Ply2048 INFO: Epoch 97 LR 0.000005 train_oa 100.00, val_oa 27.50, best val oa 35.00
+[04/25 10:22:21] ModelNet40Ply2048 INFO: Epoch 98 LR 0.000003 train_oa 100.00, val_oa 26.25, best val oa 35.00
+[04/25 10:22:22] ModelNet40Ply2048 INFO: Epoch 99 LR 0.000002 train_oa 100.00, val_oa 32.50, best val oa 35.00
+[04/25 10:22:23] ModelNet40Ply2048 INFO: Epoch 100 LR 0.000001 train_oa 100.00, val_oa 26.25, best val oa 35.00
+[04/25 10:22:24] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 50.00%
+CFD-AF-207-023-N: 0.00%
+CFD-AF-233-190-N: 0.00%
+CFD-AF-237-223-N: 75.00%
+CFD-AF-245-143-N: 25.00%
+CFD-AF-251-093-N: 0.00%
+CFD-AM-225-102-N: 12.50%
+CFD-AM-234-355-N: 12.50%
+CFD-BF-015-004-N: 37.50%
+CFD-BF-016-017-N: 100.00%
+E@67	OA: 31.25	mAcc: 31.25
+
+[04/25 10:22:24] ModelNet40Ply2048 INFO: Successful Loading the ckpt from log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_8192_10_neutral-modified_ckpt_best.pth
+[04/25 10:22:24] ModelNet40Ply2048 INFO: ckpts @ 67 epoch( {'best_val': 35.0} )
+[04/25 10:22:24] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 37.50%
+CFD-AF-207-023-N: 0.00%
+CFD-AF-233-190-N: 0.00%
+CFD-AF-237-223-N: 75.00%
+CFD-AF-245-143-N: 12.50%
+CFD-AF-251-093-N: 0.00%
+CFD-AM-225-102-N: 12.50%
+CFD-AM-234-355-N: 12.50%
+CFD-BF-015-004-N: 37.50%
+CFD-BF-016-017-N: 100.00%
+E@67	OA: 28.75	mAcc: 28.75
+
+[04/25 10:29:42] ModelNet40Ply2048 INFO: figures_path: C:/Users/pojzi/Programovanie/bakalarka/PointNeXt/examples/classification/log/modelnet40ply2048/modelnet39ply2048_neutral_8192_10_neutral-modified
+dist_url: tcp://localhost:8888
+dist_backend: nccl
+multiprocessing_distributed: False
+ngpus_per_node: 1
+world_size: 1
+launcher: mp
+local_rank: 0
+use_gpu: True
+seed: 1255
+epoch: 0
+epochs: 100
+ignore_index: None
+val_fn: validate
+deterministic: False
+sync_bn: False
+criterion_args:
+  NAME: SmoothCrossEntropy
+  label_smoothing: 0.2
+use_mask: False
+grad_norm_clip: 1
+layer_decay: 0
+step_per_update: 1
+start_epoch: 1
+sched_on_epoch: True
+wandb:
+  use_wandb: False
+  project: PointNeXt-ModelNet40Ply2048
+  tags: ['modelnet40ply2048', 'train', 'pointnext-s', 'ngpus1', 'seed1255']
+  name: modelnet39ply2048_neutral_8192_10_neutral-modified
+use_amp: False
+use_voting: False
+val_freq: 1
+resume: False
+test: False
+finetune: False
+mode: train
+logname: None
+load_path: None
+print_freq: 10
+save_freq: -1
+root_dir: log/modelnet40ply2048
+pretrained_path: None
+datatransforms:
+  train: ['PointsToTensor', 'PointCloudScaleAndTranslate']
+  val: ['PointsToTensor']
+  vote: ['PointCloudScaleAndTranslate']
+  kwargs:
+    shift: [0.2, 0.2, 0.2]
+feature_keys: pos
+num_points: 8192
+dataset:
+  common:
+    NAME: ModelNet40Ply2048
+    data_dir: ./data/ModelNet40Ply2048
+  train:
+    split: train
+    num_points: 1024
+  val:
+    split: test
+    num_points: 1024
+batch_size: 5
+dataloader:
+  num_workers: 6
+num_classes: 10
+sched: cosine
+warmup_epochs: 0
+min_lr: None
+lr: 0.001
+optimizer:
+  NAME: adamw
+  weight_decay: 0.05
+log_dir: log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified
+val_batch_size: 64
+model:
+  NAME: BaseCls
+  encoder_args:
+    NAME: PointNextEncoder
+    blocks: [1, 1, 1, 1, 1, 1]
+    strides: [1, 2, 2, 2, 2, 1]
+    width: 32
+    in_channels: 3
+    radius: 0.15
+    radius_scaling: 1.5
+    sa_layers: 2
+    sa_use_res: True
+    nsample: 32
+    expansion: 4
+    aggr_args:
+      feature_type: dp_fj
+      reduction: max
+    group_args:
+      NAME: ballquery
+      normalize_dp: True
+    conv_args:
+      order: conv-norm-act
+    act_args:
+      act: relu
+    norm_args:
+      norm: bn
+  cls_args:
+    NAME: ClsHead
+    num_classes: 10
+    mlps: [512, 256]
+    norm_args:
+      norm: bn1d
+train_mode: neutral-modified
+run_name: modelnet39ply2048_neutral_8192_10_neutral-modified
+rank: 0
+distributed: False
+mp: False
+task_name: modelnet40ply2048
+exp_name: pointnext-s
+opts: 
+run_dir: log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified
+exp_dir: log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified
+ckpt_dir: log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint
+log_path: log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\modelnet39ply2048_neutral_8192_10_neutral-modified.log
+cfg_path: log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\cfg.yaml
+[04/25 10:29:42] ModelNet40Ply2048 INFO: radius: [[0.15], [0.15], [0.22499999999999998], [0.33749999999999997], [0.50625], [0.7593749999999999]],
+ nsample: [[32], [32], [32], [32], [32], [32]]
+[04/25 10:29:42] ModelNet40Ply2048 INFO: NAME: ballquery
+normalize_dp: True
+radius: 0.15
+nsample: 32
+[04/25 10:29:42] ModelNet40Ply2048 INFO: NAME: ballquery
+normalize_dp: True
+radius: 0.22499999999999998
+nsample: 32
+[04/25 10:29:42] ModelNet40Ply2048 INFO: NAME: ballquery
+normalize_dp: True
+radius: 0.33749999999999997
+nsample: 32
+[04/25 10:29:42] ModelNet40Ply2048 INFO: NAME: ballquery
+normalize_dp: True
+radius: 0.50625
+nsample: 32
+[04/25 10:29:42] ModelNet40Ply2048 INFO: NAME: ballquery
+normalize_dp: True
+radius: None
+nsample: None
+[04/25 10:29:42] ModelNet40Ply2048 INFO: BaseCls(
+  (encoder): PointNextEncoder(
+    (encoder): Sequential(
+      (0): Sequential(
+        (0): SetAbstraction(
+          (convs): Sequential(
+            (0): Sequential(
+              (0): Conv1d(3, 32, kernel_size=(1,), stride=(1,))
+            )
+          )
+        )
+      )
+      (1): Sequential(
+        (0): SetAbstraction(
+          (skipconv): Sequential(
+            (0): Conv1d(32, 64, kernel_size=(1,), stride=(1,))
+          )
+          (act): ReLU(inplace=True)
+          (convs): Sequential(
+            (0): Sequential(
+              (0): Conv2d(35, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+            (1): Sequential(
+              (0): Conv2d(32, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            )
+          )
+          (grouper): QueryAndGroup()
+        )
+      )
+      (2): Sequential(
+        (0): SetAbstraction(
+          (skipconv): Sequential(
+            (0): Conv1d(64, 128, kernel_size=(1,), stride=(1,))
+          )
+          (act): ReLU(inplace=True)
+          (convs): Sequential(
+            (0): Sequential(
+              (0): Conv2d(67, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+            (1): Sequential(
+              (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            )
+          )
+          (grouper): QueryAndGroup()
+        )
+      )
+      (3): Sequential(
+        (0): SetAbstraction(
+          (skipconv): Sequential(
+            (0): Conv1d(128, 256, kernel_size=(1,), stride=(1,))
+          )
+          (act): ReLU(inplace=True)
+          (convs): Sequential(
+            (0): Sequential(
+              (0): Conv2d(131, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+            (1): Sequential(
+              (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            )
+          )
+          (grouper): QueryAndGroup()
+        )
+      )
+      (4): Sequential(
+        (0): SetAbstraction(
+          (skipconv): Sequential(
+            (0): Conv1d(256, 512, kernel_size=(1,), stride=(1,))
+          )
+          (act): ReLU(inplace=True)
+          (convs): Sequential(
+            (0): Sequential(
+              (0): Conv2d(259, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+            (1): Sequential(
+              (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            )
+          )
+          (grouper): QueryAndGroup()
+        )
+      )
+      (5): Sequential(
+        (0): SetAbstraction(
+          (convs): Sequential(
+            (0): Sequential(
+              (0): Conv2d(515, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+            (1): Sequential(
+              (0): Conv2d(512, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (grouper): GroupAll()
+        )
+      )
+    )
+  )
+  (prediction): ClsHead(
+    (head): Sequential(
+      (0): Sequential(
+        (0): Linear(in_features=512, out_features=512, bias=False)
+        (1): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+      )
+      (1): Dropout(p=0.5, inplace=False)
+      (2): Sequential(
+        (0): Linear(in_features=512, out_features=256, bias=False)
+        (1): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+      )
+      (3): Dropout(p=0.5, inplace=False)
+      (4): Sequential(
+        (0): Linear(in_features=256, out_features=10, bias=True)
+      )
+    )
+  )
+  (criterion): SmoothCrossEntropy()
+)
+[04/25 10:29:42] ModelNet40Ply2048 INFO: Number of params: 1.3658 M
+[04/25 10:29:42] ModelNet40Ply2048 INFO: Param groups = {
+  "decay": {
+    "weight_decay": 0.05,
+    "params": [
+      "encoder.encoder.0.0.convs.0.0.weight",
+      "encoder.encoder.1.0.skipconv.0.weight",
+      "encoder.encoder.1.0.convs.0.0.weight",
+      "encoder.encoder.1.0.convs.1.0.weight",
+      "encoder.encoder.2.0.skipconv.0.weight",
+      "encoder.encoder.2.0.convs.0.0.weight",
+      "encoder.encoder.2.0.convs.1.0.weight",
+      "encoder.encoder.3.0.skipconv.0.weight",
+      "encoder.encoder.3.0.convs.0.0.weight",
+      "encoder.encoder.3.0.convs.1.0.weight",
+      "encoder.encoder.4.0.skipconv.0.weight",
+      "encoder.encoder.4.0.convs.0.0.weight",
+      "encoder.encoder.4.0.convs.1.0.weight",
+      "encoder.encoder.5.0.convs.0.0.weight",
+      "encoder.encoder.5.0.convs.1.0.weight",
+      "prediction.head.0.0.weight",
+      "prediction.head.2.0.weight",
+      "prediction.head.4.0.weight"
+    ],
+    "lr_scale": 1.0
+  },
+  "no_decay": {
+    "weight_decay": 0.0,
+    "params": [
+      "encoder.encoder.0.0.convs.0.0.bias",
+      "encoder.encoder.1.0.skipconv.0.bias",
+      "encoder.encoder.1.0.convs.0.1.weight",
+      "encoder.encoder.1.0.convs.0.1.bias",
+      "encoder.encoder.1.0.convs.1.1.weight",
+      "encoder.encoder.1.0.convs.1.1.bias",
+      "encoder.encoder.2.0.skipconv.0.bias",
+      "encoder.encoder.2.0.convs.0.1.weight",
+      "encoder.encoder.2.0.convs.0.1.bias",
+      "encoder.encoder.2.0.convs.1.1.weight",
+      "encoder.encoder.2.0.convs.1.1.bias",
+      "encoder.encoder.3.0.skipconv.0.bias",
+      "encoder.encoder.3.0.convs.0.1.weight",
+      "encoder.encoder.3.0.convs.0.1.bias",
+      "encoder.encoder.3.0.convs.1.1.weight",
+      "encoder.encoder.3.0.convs.1.1.bias",
+      "encoder.encoder.4.0.skipconv.0.bias",
+      "encoder.encoder.4.0.convs.0.1.weight",
+      "encoder.encoder.4.0.convs.0.1.bias",
+      "encoder.encoder.4.0.convs.1.1.weight",
+      "encoder.encoder.4.0.convs.1.1.bias",
+      "encoder.encoder.5.0.convs.0.1.weight",
+      "encoder.encoder.5.0.convs.0.1.bias",
+      "encoder.encoder.5.0.convs.1.1.weight",
+      "encoder.encoder.5.0.convs.1.1.bias",
+      "prediction.head.0.1.weight",
+      "prediction.head.0.1.bias",
+      "prediction.head.2.1.weight",
+      "prediction.head.2.1.bias",
+      "prediction.head.4.0.bias"
+    ],
+    "lr_scale": 1.0
+  }
+}
+[04/25 10:29:46] ModelNet40Ply2048 INFO: number of classes of the dataset: 10, number of points sampled from dataset: 1024, number of points as model input: 8192
+[04/25 10:29:46] ModelNet40Ply2048 INFO: Training from scratch
+[04/25 10:29:46] ModelNet40Ply2048 INFO: length of training dataset: 10
+[04/25 10:29:47] ModelNet40Ply2048 INFO: Find a better ckpt @E1
+[04/25 10:29:47] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 0.00%
+CFD-AF-207-023-N: 0.00%
+CFD-AF-233-190-N: 0.00%
+CFD-AF-237-223-N: 100.00%
+CFD-AF-245-143-N: 0.00%
+CFD-AF-251-093-N: 0.00%
+CFD-AM-225-102-N: 0.00%
+CFD-AM-234-355-N: 0.00%
+CFD-BF-015-004-N: 0.00%
+CFD-BF-016-017-N: 0.00%
+E@1	OA: 10.00	mAcc: 10.00
+
+[04/25 10:29:47] ModelNet40Ply2048 INFO: Epoch 1 LR 0.001000 train_oa 20.00, val_oa 10.00, best val oa 10.00
+[04/25 10:29:47] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_8192_10_neutral-modified_ckpt_best.pth
+[04/25 10:29:47] ModelNet40Ply2048 INFO: Epoch 2 LR 0.001000 train_oa 20.00, val_oa 10.00, best val oa 10.00
+[04/25 10:29:47] ModelNet40Ply2048 INFO: Epoch 3 LR 0.000999 train_oa 30.00, val_oa 10.00, best val oa 10.00
+[04/25 10:29:48] ModelNet40Ply2048 INFO: Epoch 4 LR 0.000998 train_oa 60.00, val_oa 10.00, best val oa 10.00
+[04/25 10:29:48] ModelNet40Ply2048 INFO: Epoch 5 LR 0.000996 train_oa 50.00, val_oa 10.00, best val oa 10.00
+[04/25 10:29:49] ModelNet40Ply2048 INFO: Epoch 6 LR 0.000994 train_oa 50.00, val_oa 10.00, best val oa 10.00
+[04/25 10:29:49] ModelNet40Ply2048 INFO: Epoch 7 LR 0.000991 train_oa 90.00, val_oa 10.00, best val oa 10.00
+[04/25 10:29:49] ModelNet40Ply2048 INFO: Epoch 8 LR 0.000988 train_oa 90.00, val_oa 10.00, best val oa 10.00
+[04/25 10:29:50] ModelNet40Ply2048 INFO: Epoch 9 LR 0.000984 train_oa 100.00, val_oa 10.00, best val oa 10.00
+[04/25 10:29:50] ModelNet40Ply2048 INFO: Epoch 10 LR 0.000980 train_oa 60.00, val_oa 10.00, best val oa 10.00
+[04/25 10:29:50] ModelNet40Ply2048 INFO: Epoch 11 LR 0.000976 train_oa 90.00, val_oa 10.00, best val oa 10.00
+[04/25 10:29:51] ModelNet40Ply2048 INFO: Epoch 12 LR 0.000970 train_oa 100.00, val_oa 10.00, best val oa 10.00
+[04/25 10:29:51] ModelNet40Ply2048 INFO: Epoch 13 LR 0.000965 train_oa 100.00, val_oa 10.00, best val oa 10.00
+[04/25 10:29:52] ModelNet40Ply2048 INFO: Epoch 14 LR 0.000959 train_oa 100.00, val_oa 10.00, best val oa 10.00
+[04/25 10:29:52] ModelNet40Ply2048 INFO: Epoch 15 LR 0.000952 train_oa 100.00, val_oa 10.00, best val oa 10.00
+[04/25 10:29:52] ModelNet40Ply2048 INFO: Epoch 16 LR 0.000946 train_oa 100.00, val_oa 10.00, best val oa 10.00
+[04/25 10:29:53] ModelNet40Ply2048 INFO: Epoch 17 LR 0.000938 train_oa 100.00, val_oa 10.00, best val oa 10.00
+[04/25 10:29:53] ModelNet40Ply2048 INFO: Epoch 18 LR 0.000930 train_oa 100.00, val_oa 10.00, best val oa 10.00
+[04/25 10:29:53] ModelNet40Ply2048 INFO: Epoch 19 LR 0.000922 train_oa 100.00, val_oa 10.00, best val oa 10.00
+[04/25 10:29:54] ModelNet40Ply2048 INFO: Epoch 20 LR 0.000914 train_oa 100.00, val_oa 10.00, best val oa 10.00
+[04/25 10:29:54] ModelNet40Ply2048 INFO: Find a better ckpt @E21
+[04/25 10:29:54] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 0.00%
+CFD-AF-207-023-N: 0.00%
+CFD-AF-233-190-N: 87.50%
+CFD-AF-237-223-N: 0.00%
+CFD-AF-245-143-N: 0.00%
+CFD-AF-251-093-N: 0.00%
+CFD-AM-225-102-N: 0.00%
+CFD-AM-234-355-N: 37.50%
+CFD-BF-015-004-N: 0.00%
+CFD-BF-016-017-N: 0.00%
+E@21	OA: 12.50	mAcc: 12.50
+
+[04/25 10:29:54] ModelNet40Ply2048 INFO: Epoch 21 LR 0.000905 train_oa 100.00, val_oa 12.50, best val oa 12.50
+[04/25 10:29:54] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_8192_10_neutral-modified_ckpt_best.pth
+[04/25 10:29:55] ModelNet40Ply2048 INFO: Epoch 22 LR 0.000895 train_oa 100.00, val_oa 10.00, best val oa 12.50
+[04/25 10:29:55] ModelNet40Ply2048 INFO: Epoch 23 LR 0.000885 train_oa 100.00, val_oa 10.00, best val oa 12.50
+[04/25 10:29:55] ModelNet40Ply2048 INFO: Epoch 24 LR 0.000875 train_oa 100.00, val_oa 8.75, best val oa 12.50
+[04/25 10:29:56] ModelNet40Ply2048 INFO: Epoch 25 LR 0.000865 train_oa 100.00, val_oa 10.00, best val oa 12.50
+[04/25 10:29:56] ModelNet40Ply2048 INFO: Epoch 26 LR 0.000854 train_oa 100.00, val_oa 7.50, best val oa 12.50
+[04/25 10:29:56] ModelNet40Ply2048 INFO: Epoch 27 LR 0.000842 train_oa 100.00, val_oa 8.75, best val oa 12.50
+[04/25 10:29:57] ModelNet40Ply2048 INFO: Epoch 28 LR 0.000831 train_oa 100.00, val_oa 8.75, best val oa 12.50
+[04/25 10:29:57] ModelNet40Ply2048 INFO: Epoch 29 LR 0.000819 train_oa 100.00, val_oa 6.25, best val oa 12.50
+[04/25 10:29:58] ModelNet40Ply2048 INFO: Epoch 30 LR 0.000807 train_oa 100.00, val_oa 7.50, best val oa 12.50
+[04/25 10:29:58] ModelNet40Ply2048 INFO: Epoch 31 LR 0.000794 train_oa 100.00, val_oa 10.00, best val oa 12.50
+[04/25 10:29:58] ModelNet40Ply2048 INFO: Find a better ckpt @E32
+[04/25 10:29:58] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 0.00%
+CFD-AF-207-023-N: 0.00%
+CFD-AF-233-190-N: 12.50%
+CFD-AF-237-223-N: 12.50%
+CFD-AF-245-143-N: 0.00%
+CFD-AF-251-093-N: 0.00%
+CFD-AM-225-102-N: 0.00%
+CFD-AM-234-355-N: 12.50%
+CFD-BF-015-004-N: 75.00%
+CFD-BF-016-017-N: 25.00%
+E@32	OA: 13.75	mAcc: 13.75
+
+[04/25 10:29:58] ModelNet40Ply2048 INFO: Epoch 32 LR 0.000781 train_oa 100.00, val_oa 13.75, best val oa 13.75
+[04/25 10:29:58] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_8192_10_neutral-modified_ckpt_best.pth
+[04/25 10:29:59] ModelNet40Ply2048 INFO: Find a better ckpt @E33
+[04/25 10:29:59] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 0.00%
+CFD-AF-207-023-N: 0.00%
+CFD-AF-233-190-N: 12.50%
+CFD-AF-237-223-N: 25.00%
+CFD-AF-245-143-N: 0.00%
+CFD-AF-251-093-N: 0.00%
+CFD-AM-225-102-N: 0.00%
+CFD-AM-234-355-N: 12.50%
+CFD-BF-015-004-N: 62.50%
+CFD-BF-016-017-N: 87.50%
+E@33	OA: 20.00	mAcc: 20.00
+
+[04/25 10:29:59] ModelNet40Ply2048 INFO: Epoch 33 LR 0.000768 train_oa 100.00, val_oa 20.00, best val oa 20.00
+[04/25 10:29:59] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_8192_10_neutral-modified_ckpt_best.pth
+[04/25 10:29:59] ModelNet40Ply2048 INFO: Find a better ckpt @E34
+[04/25 10:29:59] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 0.00%
+CFD-AF-207-023-N: 0.00%
+CFD-AF-233-190-N: 12.50%
+CFD-AF-237-223-N: 37.50%
+CFD-AF-245-143-N: 0.00%
+CFD-AF-251-093-N: 0.00%
+CFD-AM-225-102-N: 0.00%
+CFD-AM-234-355-N: 12.50%
+CFD-BF-015-004-N: 87.50%
+CFD-BF-016-017-N: 87.50%
+E@34	OA: 23.75	mAcc: 23.75
+
+[04/25 10:29:59] ModelNet40Ply2048 INFO: Epoch 34 LR 0.000755 train_oa 100.00, val_oa 23.75, best val oa 23.75
+[04/25 10:29:59] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_8192_10_neutral-modified_ckpt_best.pth
+[04/25 10:30:00] ModelNet40Ply2048 INFO: Epoch 35 LR 0.000741 train_oa 100.00, val_oa 22.50, best val oa 23.75
+[04/25 10:30:00] ModelNet40Ply2048 INFO: Find a better ckpt @E36
+[04/25 10:30:00] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 0.00%
+CFD-AF-207-023-N: 12.50%
+CFD-AF-233-190-N: 25.00%
+CFD-AF-237-223-N: 25.00%
+CFD-AF-245-143-N: 0.00%
+CFD-AF-251-093-N: 0.00%
+CFD-AM-225-102-N: 0.00%
+CFD-AM-234-355-N: 12.50%
+CFD-BF-015-004-N: 87.50%
+CFD-BF-016-017-N: 100.00%
+E@36	OA: 26.25	mAcc: 26.25
+
+[04/25 10:30:00] ModelNet40Ply2048 INFO: Epoch 36 LR 0.000727 train_oa 100.00, val_oa 26.25, best val oa 26.25
+[04/25 10:30:00] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_8192_10_neutral-modified_ckpt_best.pth
+[04/25 10:30:01] ModelNet40Ply2048 INFO: Epoch 37 LR 0.000713 train_oa 100.00, val_oa 23.75, best val oa 26.25
+[04/25 10:30:01] ModelNet40Ply2048 INFO: Epoch 38 LR 0.000699 train_oa 100.00, val_oa 25.00, best val oa 26.25
+[04/25 10:30:02] ModelNet40Ply2048 INFO: Epoch 39 LR 0.000684 train_oa 100.00, val_oa 26.25, best val oa 26.25
+[04/25 10:30:02] ModelNet40Ply2048 INFO: Epoch 40 LR 0.000670 train_oa 100.00, val_oa 26.25, best val oa 26.25
+[04/25 10:30:03] ModelNet40Ply2048 INFO: Epoch 41 LR 0.000655 train_oa 100.00, val_oa 25.00, best val oa 26.25
+[04/25 10:30:03] ModelNet40Ply2048 INFO: Find a better ckpt @E42
+[04/25 10:30:03] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 0.00%
+CFD-AF-207-023-N: 25.00%
+CFD-AF-233-190-N: 50.00%
+CFD-AF-237-223-N: 0.00%
+CFD-AF-245-143-N: 0.00%
+CFD-AF-251-093-N: 12.50%
+CFD-AM-225-102-N: 12.50%
+CFD-AM-234-355-N: 0.00%
+CFD-BF-015-004-N: 87.50%
+CFD-BF-016-017-N: 100.00%
+E@42	OA: 28.75	mAcc: 28.75
+
+[04/25 10:30:03] ModelNet40Ply2048 INFO: Epoch 42 LR 0.000640 train_oa 100.00, val_oa 28.75, best val oa 28.75
+[04/25 10:30:03] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_8192_10_neutral-modified_ckpt_best.pth
+[04/25 10:30:04] ModelNet40Ply2048 INFO: Find a better ckpt @E43
+[04/25 10:30:04] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 0.00%
+CFD-AF-207-023-N: 25.00%
+CFD-AF-233-190-N: 50.00%
+CFD-AF-237-223-N: 0.00%
+CFD-AF-245-143-N: 12.50%
+CFD-AF-251-093-N: 12.50%
+CFD-AM-225-102-N: 12.50%
+CFD-AM-234-355-N: 12.50%
+CFD-BF-015-004-N: 87.50%
+CFD-BF-016-017-N: 100.00%
+E@43	OA: 31.25	mAcc: 31.25
+
+[04/25 10:30:04] ModelNet40Ply2048 INFO: Epoch 43 LR 0.000625 train_oa 100.00, val_oa 31.25, best val oa 31.25
+[04/25 10:30:04] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_8192_10_neutral-modified_ckpt_best.pth
+[04/25 10:30:04] ModelNet40Ply2048 INFO: Epoch 44 LR 0.000609 train_oa 100.00, val_oa 30.00, best val oa 31.25
+[04/25 10:30:05] ModelNet40Ply2048 INFO: Find a better ckpt @E45
+[04/25 10:30:05] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 0.00%
+CFD-AF-207-023-N: 37.50%
+CFD-AF-233-190-N: 37.50%
+CFD-AF-237-223-N: 12.50%
+CFD-AF-245-143-N: 0.00%
+CFD-AF-251-093-N: 25.00%
+CFD-AM-225-102-N: 37.50%
+CFD-AM-234-355-N: 0.00%
+CFD-BF-015-004-N: 100.00%
+CFD-BF-016-017-N: 100.00%
+E@45	OA: 35.00	mAcc: 35.00
+
+[04/25 10:30:05] ModelNet40Ply2048 INFO: Epoch 45 LR 0.000594 train_oa 100.00, val_oa 35.00, best val oa 35.00
+[04/25 10:30:05] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_8192_10_neutral-modified_ckpt_best.pth
+[04/25 10:30:05] ModelNet40Ply2048 INFO: Epoch 46 LR 0.000579 train_oa 100.00, val_oa 33.75, best val oa 35.00
+[04/25 10:30:05] ModelNet40Ply2048 INFO: Epoch 47 LR 0.000563 train_oa 100.00, val_oa 33.75, best val oa 35.00
+[04/25 10:30:06] ModelNet40Ply2048 INFO: Epoch 48 LR 0.000548 train_oa 100.00, val_oa 33.75, best val oa 35.00
+[04/25 10:30:06] ModelNet40Ply2048 INFO: Epoch 49 LR 0.000532 train_oa 100.00, val_oa 31.25, best val oa 35.00
+[04/25 10:30:07] ModelNet40Ply2048 INFO: Epoch 50 LR 0.000516 train_oa 100.00, val_oa 33.75, best val oa 35.00
+[04/25 10:30:08] ModelNet40Ply2048 INFO: Epoch 51 LR 0.000501 train_oa 100.00, val_oa 31.25, best val oa 35.00
+[04/25 10:30:09] ModelNet40Ply2048 INFO: Epoch 52 LR 0.000485 train_oa 100.00, val_oa 32.50, best val oa 35.00
+[04/25 10:30:10] ModelNet40Ply2048 INFO: Find a better ckpt @E53
+[04/25 10:30:10] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 0.00%
+CFD-AF-207-023-N: 25.00%
+CFD-AF-233-190-N: 12.50%
+CFD-AF-237-223-N: 37.50%
+CFD-AF-245-143-N: 12.50%
+CFD-AF-251-093-N: 12.50%
+CFD-AM-225-102-N: 62.50%
+CFD-AM-234-355-N: 12.50%
+CFD-BF-015-004-N: 87.50%
+CFD-BF-016-017-N: 100.00%
+E@53	OA: 36.25	mAcc: 36.25
+
+[04/25 10:30:10] ModelNet40Ply2048 INFO: Epoch 53 LR 0.000469 train_oa 100.00, val_oa 36.25, best val oa 36.25
+[04/25 10:30:11] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_8192_10_neutral-modified_ckpt_best.pth
+[04/25 10:30:12] ModelNet40Ply2048 INFO: Epoch 54 LR 0.000453 train_oa 100.00, val_oa 30.00, best val oa 36.25
+[04/25 10:30:13] ModelNet40Ply2048 INFO: Epoch 55 LR 0.000438 train_oa 100.00, val_oa 35.00, best val oa 36.25
+[04/25 10:30:14] ModelNet40Ply2048 INFO: Epoch 56 LR 0.000422 train_oa 100.00, val_oa 33.75, best val oa 36.25
+[04/25 10:30:15] ModelNet40Ply2048 INFO: Epoch 57 LR 0.000407 train_oa 100.00, val_oa 33.75, best val oa 36.25
+[04/25 10:30:16] ModelNet40Ply2048 INFO: Epoch 58 LR 0.000392 train_oa 100.00, val_oa 36.25, best val oa 36.25
+[04/25 10:30:17] ModelNet40Ply2048 INFO: Epoch 59 LR 0.000376 train_oa 100.00, val_oa 35.00, best val oa 36.25
+[04/25 10:30:18] ModelNet40Ply2048 INFO: Epoch 60 LR 0.000361 train_oa 100.00, val_oa 35.00, best val oa 36.25
+[04/25 10:30:19] ModelNet40Ply2048 INFO: Epoch 61 LR 0.000346 train_oa 100.00, val_oa 35.00, best val oa 36.25
+[04/25 10:30:20] ModelNet40Ply2048 INFO: Epoch 62 LR 0.000331 train_oa 100.00, val_oa 33.75, best val oa 36.25
+[04/25 10:30:21] ModelNet40Ply2048 INFO: Epoch 63 LR 0.000317 train_oa 100.00, val_oa 31.25, best val oa 36.25
+[04/25 10:30:22] ModelNet40Ply2048 INFO: Epoch 64 LR 0.000302 train_oa 100.00, val_oa 32.50, best val oa 36.25
+[04/25 10:30:23] ModelNet40Ply2048 INFO: Epoch 65 LR 0.000288 train_oa 100.00, val_oa 33.75, best val oa 36.25
+[04/25 10:30:24] ModelNet40Ply2048 INFO: Find a better ckpt @E66
+[04/25 10:30:24] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 12.50%
+CFD-AF-207-023-N: 25.00%
+CFD-AF-233-190-N: 12.50%
+CFD-AF-237-223-N: 37.50%
+CFD-AF-245-143-N: 0.00%
+CFD-AF-251-093-N: 25.00%
+CFD-AM-225-102-N: 62.50%
+CFD-AM-234-355-N: 12.50%
+CFD-BF-015-004-N: 87.50%
+CFD-BF-016-017-N: 100.00%
+E@66	OA: 37.50	mAcc: 37.50
+
+[04/25 10:30:24] ModelNet40Ply2048 INFO: Epoch 66 LR 0.000274 train_oa 100.00, val_oa 37.50, best val oa 37.50
+[04/25 10:30:24] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_8192_10_neutral-modified_ckpt_best.pth
+[04/25 10:30:25] ModelNet40Ply2048 INFO: Epoch 67 LR 0.000260 train_oa 100.00, val_oa 35.00, best val oa 37.50
+[04/25 10:30:26] ModelNet40Ply2048 INFO: Epoch 68 LR 0.000246 train_oa 100.00, val_oa 33.75, best val oa 37.50
+[04/25 10:30:27] ModelNet40Ply2048 INFO: Epoch 69 LR 0.000233 train_oa 100.00, val_oa 37.50, best val oa 37.50
+[04/25 10:30:28] ModelNet40Ply2048 INFO: Epoch 70 LR 0.000220 train_oa 100.00, val_oa 33.75, best val oa 37.50
+[04/25 10:30:29] ModelNet40Ply2048 INFO: Epoch 71 LR 0.000207 train_oa 100.00, val_oa 33.75, best val oa 37.50
+[04/25 10:30:30] ModelNet40Ply2048 INFO: Epoch 72 LR 0.000194 train_oa 100.00, val_oa 35.00, best val oa 37.50
+[04/25 10:30:31] ModelNet40Ply2048 INFO: Epoch 73 LR 0.000182 train_oa 100.00, val_oa 37.50, best val oa 37.50
+[04/25 10:30:32] ModelNet40Ply2048 INFO: Epoch 74 LR 0.000170 train_oa 100.00, val_oa 35.00, best val oa 37.50
+[04/25 10:30:33] ModelNet40Ply2048 INFO: Epoch 75 LR 0.000159 train_oa 100.00, val_oa 33.75, best val oa 37.50
+[04/25 10:30:34] ModelNet40Ply2048 INFO: Epoch 76 LR 0.000147 train_oa 100.00, val_oa 35.00, best val oa 37.50
+[04/25 10:30:35] ModelNet40Ply2048 INFO: Epoch 77 LR 0.000136 train_oa 100.00, val_oa 35.00, best val oa 37.50
+[04/25 10:30:36] ModelNet40Ply2048 INFO: Find a better ckpt @E78
+[04/25 10:30:36] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 12.50%
+CFD-AF-207-023-N: 50.00%
+CFD-AF-233-190-N: 12.50%
+CFD-AF-237-223-N: 37.50%
+CFD-AF-245-143-N: 0.00%
+CFD-AF-251-093-N: 25.00%
+CFD-AM-225-102-N: 50.00%
+CFD-AM-234-355-N: 12.50%
+CFD-BF-015-004-N: 87.50%
+CFD-BF-016-017-N: 100.00%
+E@78	OA: 38.75	mAcc: 38.75
+
+[04/25 10:30:36] ModelNet40Ply2048 INFO: Epoch 78 LR 0.000126 train_oa 100.00, val_oa 38.75, best val oa 38.75
+[04/25 10:30:36] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_8192_10_neutral-modified_ckpt_best.pth
+[04/25 10:30:37] ModelNet40Ply2048 INFO: Epoch 79 LR 0.000116 train_oa 100.00, val_oa 31.25, best val oa 38.75
+[04/25 10:30:38] ModelNet40Ply2048 INFO: Epoch 80 LR 0.000106 train_oa 100.00, val_oa 36.25, best val oa 38.75
+[04/25 10:30:39] ModelNet40Ply2048 INFO: Epoch 81 LR 0.000096 train_oa 100.00, val_oa 36.25, best val oa 38.75
+[04/25 10:30:40] ModelNet40Ply2048 INFO: Epoch 82 LR 0.000087 train_oa 100.00, val_oa 35.00, best val oa 38.75
+[04/25 10:30:41] ModelNet40Ply2048 INFO: Epoch 83 LR 0.000079 train_oa 100.00, val_oa 37.50, best val oa 38.75
+[04/25 10:30:42] ModelNet40Ply2048 INFO: Epoch 84 LR 0.000071 train_oa 100.00, val_oa 36.25, best val oa 38.75
+[04/25 10:30:43] ModelNet40Ply2048 INFO: Epoch 85 LR 0.000063 train_oa 100.00, val_oa 35.00, best val oa 38.75
+[04/25 10:30:44] ModelNet40Ply2048 INFO: Epoch 86 LR 0.000055 train_oa 100.00, val_oa 33.75, best val oa 38.75
+[04/25 10:30:45] ModelNet40Ply2048 INFO: Epoch 87 LR 0.000049 train_oa 100.00, val_oa 37.50, best val oa 38.75
+[04/25 10:30:46] ModelNet40Ply2048 INFO: Epoch 88 LR 0.000042 train_oa 100.00, val_oa 35.00, best val oa 38.75
+[04/25 10:30:47] ModelNet40Ply2048 INFO: Epoch 89 LR 0.000036 train_oa 100.00, val_oa 33.75, best val oa 38.75
+[04/25 10:30:49] ModelNet40Ply2048 INFO: Epoch 90 LR 0.000031 train_oa 100.00, val_oa 37.50, best val oa 38.75
+[04/25 10:30:50] ModelNet40Ply2048 INFO: Epoch 91 LR 0.000025 train_oa 100.00, val_oa 37.50, best val oa 38.75
+[04/25 10:30:51] ModelNet40Ply2048 INFO: Epoch 92 LR 0.000021 train_oa 100.00, val_oa 33.75, best val oa 38.75
+[04/25 10:30:52] ModelNet40Ply2048 INFO: Epoch 93 LR 0.000017 train_oa 100.00, val_oa 37.50, best val oa 38.75
+[04/25 10:30:53] ModelNet40Ply2048 INFO: Epoch 94 LR 0.000013 train_oa 100.00, val_oa 35.00, best val oa 38.75
+[04/25 10:30:55] ModelNet40Ply2048 INFO: Epoch 95 LR 0.000010 train_oa 100.00, val_oa 36.25, best val oa 38.75
+[04/25 10:30:56] ModelNet40Ply2048 INFO: Epoch 96 LR 0.000007 train_oa 100.00, val_oa 36.25, best val oa 38.75
+[04/25 10:30:57] ModelNet40Ply2048 INFO: Epoch 97 LR 0.000005 train_oa 100.00, val_oa 37.50, best val oa 38.75
+[04/25 10:30:58] ModelNet40Ply2048 INFO: Epoch 98 LR 0.000003 train_oa 100.00, val_oa 33.75, best val oa 38.75
+[04/25 10:30:59] ModelNet40Ply2048 INFO: Find a better ckpt @E99
+[04/25 10:30:59] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 0.00%
+CFD-AF-207-023-N: 37.50%
+CFD-AF-233-190-N: 12.50%
+CFD-AF-237-223-N: 75.00%
+CFD-AF-245-143-N: 0.00%
+CFD-AF-251-093-N: 25.00%
+CFD-AM-225-102-N: 62.50%
+CFD-AM-234-355-N: 12.50%
+CFD-BF-015-004-N: 75.00%
+CFD-BF-016-017-N: 100.00%
+E@99	OA: 40.00	mAcc: 40.00
+
+[04/25 10:30:59] ModelNet40Ply2048 INFO: Epoch 99 LR 0.000002 train_oa 100.00, val_oa 40.00, best val oa 40.00
+[04/25 10:30:59] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_8192_10_neutral-modified_ckpt_best.pth
+[04/25 10:31:00] ModelNet40Ply2048 INFO: Epoch 100 LR 0.000001 train_oa 100.00, val_oa 37.50, best val oa 40.00
+[04/25 10:31:01] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 0.00%
+CFD-AF-207-023-N: 37.50%
+CFD-AF-233-190-N: 12.50%
+CFD-AF-237-223-N: 25.00%
+CFD-AF-245-143-N: 0.00%
+CFD-AF-251-093-N: 25.00%
+CFD-AM-225-102-N: 50.00%
+CFD-AM-234-355-N: 12.50%
+CFD-BF-015-004-N: 87.50%
+CFD-BF-016-017-N: 100.00%
+E@99	OA: 35.00	mAcc: 35.00
+
+[04/25 10:31:01] ModelNet40Ply2048 INFO: Successful Loading the ckpt from log/modelnet40ply2048\modelnet39ply2048_neutral_8192_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_8192_10_neutral-modified_ckpt_best.pth
+[04/25 10:31:01] ModelNet40Ply2048 INFO: ckpts @ 99 epoch( {'best_val': 40.0} )
+[04/25 10:31:02] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 0.00%
+CFD-AF-207-023-N: 25.00%
+CFD-AF-233-190-N: 12.50%
+CFD-AF-237-223-N: 37.50%
+CFD-AF-245-143-N: 0.00%
+CFD-AF-251-093-N: 25.00%
+CFD-AM-225-102-N: 50.00%
+CFD-AM-234-355-N: 12.50%
+CFD-BF-015-004-N: 87.50%
+CFD-BF-016-017-N: 100.00%
+E@99	OA: 35.00	mAcc: 35.00
+
+[04/25 10:41:39] ModelNet40Ply2048 INFO: figures_path: C:/Users/pojzi/Programovanie/bakalarka/PointNeXt/examples/classification/log/modelnet40ply2048/modelnet39ply2048_neutral_2048_10_neutral-modified
+dist_url: tcp://localhost:8888
+dist_backend: nccl
+multiprocessing_distributed: False
+ngpus_per_node: 1
+world_size: 1
+launcher: mp
+local_rank: 0
+use_gpu: True
+seed: 9488
+epoch: 0
+epochs: 100
+ignore_index: None
+val_fn: validate
+deterministic: False
+sync_bn: False
+criterion_args:
+  NAME: SmoothCrossEntropy
+  label_smoothing: 0.2
+use_mask: False
+grad_norm_clip: 1
+layer_decay: 0
+step_per_update: 1
+start_epoch: 1
+sched_on_epoch: True
+wandb:
+  use_wandb: False
+  project: PointNeXt-ModelNet40Ply2048
+  tags: ['modelnet40ply2048', 'train', 'pointnext-s', 'ngpus1', 'seed9488']
+  name: modelnet39ply2048_neutral_2048_10_neutral-modified
+use_amp: False
+use_voting: False
+val_freq: 1
+resume: False
+test: False
+finetune: False
+mode: train
+logname: None
+load_path: None
+print_freq: 10
+save_freq: -1
+root_dir: log/modelnet40ply2048
+pretrained_path: None
+datatransforms:
+  train: ['PointsToTensor', 'PointCloudScaleAndTranslate']
+  val: ['PointsToTensor']
+  vote: ['PointCloudScaleAndTranslate']
+  kwargs:
+    shift: [0.2, 0.2, 0.2]
+feature_keys: pos
+num_points: 2048
+dataset:
+  common:
+    NAME: ModelNet40Ply2048
+    data_dir: ./data/ModelNet40Ply2048
+  train:
+    split: train
+    num_points: 1024
+  val:
+    split: test
+    num_points: 1024
+batch_size: 5
+dataloader:
+  num_workers: 6
+num_classes: 10
+sched: cosine
+warmup_epochs: 0
+min_lr: None
+lr: 0.001
+optimizer:
+  NAME: adamw
+  weight_decay: 0.05
+log_dir: log/modelnet40ply2048\modelnet39ply2048_neutral_2048_10_neutral-modified
+val_batch_size: 64
+model:
+  NAME: BaseCls
+  encoder_args:
+    NAME: PointNextEncoder
+    blocks: [1, 1, 1, 1, 1, 1]
+    strides: [1, 2, 2, 2, 2, 1]
+    width: 32
+    in_channels: 3
+    radius: 0.15
+    radius_scaling: 1.5
+    sa_layers: 2
+    sa_use_res: True
+    nsample: 32
+    expansion: 4
+    aggr_args:
+      feature_type: dp_fj
+      reduction: max
+    group_args:
+      NAME: ballquery
+      normalize_dp: True
+    conv_args:
+      order: conv-norm-act
+    act_args:
+      act: relu
+    norm_args:
+      norm: bn
+  cls_args:
+    NAME: ClsHead
+    num_classes: 10
+    mlps: [512, 256]
+    norm_args:
+      norm: bn1d
+train_mode: neutral-modified
+run_name: modelnet39ply2048_neutral_2048_10_neutral-modified
+rank: 0
+distributed: False
+mp: False
+task_name: modelnet40ply2048
+exp_name: pointnext-s
+opts: 
+run_dir: log/modelnet40ply2048\modelnet39ply2048_neutral_2048_10_neutral-modified
+exp_dir: log/modelnet40ply2048\modelnet39ply2048_neutral_2048_10_neutral-modified
+ckpt_dir: log/modelnet40ply2048\modelnet39ply2048_neutral_2048_10_neutral-modified\checkpoint
+log_path: log/modelnet40ply2048\modelnet39ply2048_neutral_2048_10_neutral-modified\modelnet39ply2048_neutral_2048_10_neutral-modified.log
+cfg_path: log/modelnet40ply2048\modelnet39ply2048_neutral_2048_10_neutral-modified\cfg.yaml
+[04/25 10:41:39] ModelNet40Ply2048 INFO: radius: [[0.15], [0.15], [0.22499999999999998], [0.33749999999999997], [0.50625], [0.7593749999999999]],
+ nsample: [[32], [32], [32], [32], [32], [32]]
+[04/25 10:41:39] ModelNet40Ply2048 INFO: NAME: ballquery
+normalize_dp: True
+radius: 0.15
+nsample: 32
+[04/25 10:41:39] ModelNet40Ply2048 INFO: NAME: ballquery
+normalize_dp: True
+radius: 0.22499999999999998
+nsample: 32
+[04/25 10:41:39] ModelNet40Ply2048 INFO: NAME: ballquery
+normalize_dp: True
+radius: 0.33749999999999997
+nsample: 32
+[04/25 10:41:39] ModelNet40Ply2048 INFO: NAME: ballquery
+normalize_dp: True
+radius: 0.50625
+nsample: 32
+[04/25 10:41:39] ModelNet40Ply2048 INFO: NAME: ballquery
+normalize_dp: True
+radius: None
+nsample: None
+[04/25 10:41:39] ModelNet40Ply2048 INFO: BaseCls(
+  (encoder): PointNextEncoder(
+    (encoder): Sequential(
+      (0): Sequential(
+        (0): SetAbstraction(
+          (convs): Sequential(
+            (0): Sequential(
+              (0): Conv1d(3, 32, kernel_size=(1,), stride=(1,))
+            )
+          )
+        )
+      )
+      (1): Sequential(
+        (0): SetAbstraction(
+          (skipconv): Sequential(
+            (0): Conv1d(32, 64, kernel_size=(1,), stride=(1,))
+          )
+          (act): ReLU(inplace=True)
+          (convs): Sequential(
+            (0): Sequential(
+              (0): Conv2d(35, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+            (1): Sequential(
+              (0): Conv2d(32, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            )
+          )
+          (grouper): QueryAndGroup()
+        )
+      )
+      (2): Sequential(
+        (0): SetAbstraction(
+          (skipconv): Sequential(
+            (0): Conv1d(64, 128, kernel_size=(1,), stride=(1,))
+          )
+          (act): ReLU(inplace=True)
+          (convs): Sequential(
+            (0): Sequential(
+              (0): Conv2d(67, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+            (1): Sequential(
+              (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            )
+          )
+          (grouper): QueryAndGroup()
+        )
+      )
+      (3): Sequential(
+        (0): SetAbstraction(
+          (skipconv): Sequential(
+            (0): Conv1d(128, 256, kernel_size=(1,), stride=(1,))
+          )
+          (act): ReLU(inplace=True)
+          (convs): Sequential(
+            (0): Sequential(
+              (0): Conv2d(131, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+            (1): Sequential(
+              (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            )
+          )
+          (grouper): QueryAndGroup()
+        )
+      )
+      (4): Sequential(
+        (0): SetAbstraction(
+          (skipconv): Sequential(
+            (0): Conv1d(256, 512, kernel_size=(1,), stride=(1,))
+          )
+          (act): ReLU(inplace=True)
+          (convs): Sequential(
+            (0): Sequential(
+              (0): Conv2d(259, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+            (1): Sequential(
+              (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            )
+          )
+          (grouper): QueryAndGroup()
+        )
+      )
+      (5): Sequential(
+        (0): SetAbstraction(
+          (convs): Sequential(
+            (0): Sequential(
+              (0): Conv2d(515, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+            (1): Sequential(
+              (0): Conv2d(512, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (grouper): GroupAll()
+        )
+      )
+    )
+  )
+  (prediction): ClsHead(
+    (head): Sequential(
+      (0): Sequential(
+        (0): Linear(in_features=512, out_features=512, bias=False)
+        (1): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+      )
+      (1): Dropout(p=0.5, inplace=False)
+      (2): Sequential(
+        (0): Linear(in_features=512, out_features=256, bias=False)
+        (1): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+      )
+      (3): Dropout(p=0.5, inplace=False)
+      (4): Sequential(
+        (0): Linear(in_features=256, out_features=10, bias=True)
+      )
+    )
+  )
+  (criterion): SmoothCrossEntropy()
+)
+[04/25 10:41:39] ModelNet40Ply2048 INFO: Number of params: 1.3658 M
+[04/25 10:41:39] ModelNet40Ply2048 INFO: Param groups = {
+  "decay": {
+    "weight_decay": 0.05,
+    "params": [
+      "encoder.encoder.0.0.convs.0.0.weight",
+      "encoder.encoder.1.0.skipconv.0.weight",
+      "encoder.encoder.1.0.convs.0.0.weight",
+      "encoder.encoder.1.0.convs.1.0.weight",
+      "encoder.encoder.2.0.skipconv.0.weight",
+      "encoder.encoder.2.0.convs.0.0.weight",
+      "encoder.encoder.2.0.convs.1.0.weight",
+      "encoder.encoder.3.0.skipconv.0.weight",
+      "encoder.encoder.3.0.convs.0.0.weight",
+      "encoder.encoder.3.0.convs.1.0.weight",
+      "encoder.encoder.4.0.skipconv.0.weight",
+      "encoder.encoder.4.0.convs.0.0.weight",
+      "encoder.encoder.4.0.convs.1.0.weight",
+      "encoder.encoder.5.0.convs.0.0.weight",
+      "encoder.encoder.5.0.convs.1.0.weight",
+      "prediction.head.0.0.weight",
+      "prediction.head.2.0.weight",
+      "prediction.head.4.0.weight"
+    ],
+    "lr_scale": 1.0
+  },
+  "no_decay": {
+    "weight_decay": 0.0,
+    "params": [
+      "encoder.encoder.0.0.convs.0.0.bias",
+      "encoder.encoder.1.0.skipconv.0.bias",
+      "encoder.encoder.1.0.convs.0.1.weight",
+      "encoder.encoder.1.0.convs.0.1.bias",
+      "encoder.encoder.1.0.convs.1.1.weight",
+      "encoder.encoder.1.0.convs.1.1.bias",
+      "encoder.encoder.2.0.skipconv.0.bias",
+      "encoder.encoder.2.0.convs.0.1.weight",
+      "encoder.encoder.2.0.convs.0.1.bias",
+      "encoder.encoder.2.0.convs.1.1.weight",
+      "encoder.encoder.2.0.convs.1.1.bias",
+      "encoder.encoder.3.0.skipconv.0.bias",
+      "encoder.encoder.3.0.convs.0.1.weight",
+      "encoder.encoder.3.0.convs.0.1.bias",
+      "encoder.encoder.3.0.convs.1.1.weight",
+      "encoder.encoder.3.0.convs.1.1.bias",
+      "encoder.encoder.4.0.skipconv.0.bias",
+      "encoder.encoder.4.0.convs.0.1.weight",
+      "encoder.encoder.4.0.convs.0.1.bias",
+      "encoder.encoder.4.0.convs.1.1.weight",
+      "encoder.encoder.4.0.convs.1.1.bias",
+      "encoder.encoder.5.0.convs.0.1.weight",
+      "encoder.encoder.5.0.convs.0.1.bias",
+      "encoder.encoder.5.0.convs.1.1.weight",
+      "encoder.encoder.5.0.convs.1.1.bias",
+      "prediction.head.0.1.weight",
+      "prediction.head.0.1.bias",
+      "prediction.head.2.1.weight",
+      "prediction.head.2.1.bias",
+      "prediction.head.4.0.bias"
+    ],
+    "lr_scale": 1.0
+  }
+}
+[04/25 10:41:43] ModelNet40Ply2048 INFO: number of classes of the dataset: 10, number of points sampled from dataset: 1024, number of points as model input: 2048
+[04/25 10:41:43] ModelNet40Ply2048 INFO: Training from scratch
+[04/25 10:41:43] ModelNet40Ply2048 INFO: length of training dataset: 10
+[04/25 10:41:44] ModelNet40Ply2048 INFO: Find a better ckpt @E1
+[04/25 10:41:44] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 0.00%
+CFD-AF-207-023-N: 0.00%
+CFD-AF-233-190-N: 0.00%
+CFD-AF-237-223-N: 0.00%
+CFD-AF-245-143-N: 100.00%
+CFD-AF-251-093-N: 0.00%
+CFD-AM-225-102-N: 0.00%
+CFD-AM-234-355-N: 0.00%
+CFD-BF-015-004-N: 0.00%
+CFD-BF-016-017-N: 0.00%
+E@1	OA: 10.00	mAcc: 10.00
+
+[04/25 10:41:44] ModelNet40Ply2048 INFO: Epoch 1 LR 0.001000 train_oa 10.00, val_oa 10.00, best val oa 10.00
+[04/25 10:41:44] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_2048_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_2048_10_neutral-modified_ckpt_best.pth
+[04/25 10:41:44] ModelNet40Ply2048 INFO: Epoch 2 LR 0.001000 train_oa 20.00, val_oa 10.00, best val oa 10.00
+[04/25 10:41:44] ModelNet40Ply2048 INFO: Epoch 3 LR 0.000999 train_oa 40.00, val_oa 10.00, best val oa 10.00
+[04/25 10:41:45] ModelNet40Ply2048 INFO: Epoch 4 LR 0.000998 train_oa 30.00, val_oa 10.00, best val oa 10.00
+[04/25 10:41:45] ModelNet40Ply2048 INFO: Epoch 5 LR 0.000996 train_oa 50.00, val_oa 10.00, best val oa 10.00
+[04/25 10:41:45] ModelNet40Ply2048 INFO: Epoch 6 LR 0.000994 train_oa 40.00, val_oa 10.00, best val oa 10.00
+[04/25 10:41:46] ModelNet40Ply2048 INFO: Epoch 7 LR 0.000991 train_oa 50.00, val_oa 10.00, best val oa 10.00
+[04/25 10:41:46] ModelNet40Ply2048 INFO: Epoch 8 LR 0.000988 train_oa 80.00, val_oa 10.00, best val oa 10.00
+[04/25 10:41:47] ModelNet40Ply2048 INFO: Epoch 9 LR 0.000984 train_oa 80.00, val_oa 10.00, best val oa 10.00
+[04/25 10:41:47] ModelNet40Ply2048 INFO: Epoch 10 LR 0.000980 train_oa 70.00, val_oa 10.00, best val oa 10.00
+[04/25 10:41:47] ModelNet40Ply2048 INFO: Epoch 11 LR 0.000976 train_oa 100.00, val_oa 10.00, best val oa 10.00
+[04/25 10:41:48] ModelNet40Ply2048 INFO: Epoch 12 LR 0.000970 train_oa 100.00, val_oa 10.00, best val oa 10.00
+[04/25 10:41:48] ModelNet40Ply2048 INFO: Epoch 13 LR 0.000965 train_oa 100.00, val_oa 10.00, best val oa 10.00
+[04/25 10:41:48] ModelNet40Ply2048 INFO: Epoch 14 LR 0.000959 train_oa 100.00, val_oa 10.00, best val oa 10.00
+[04/25 10:41:49] ModelNet40Ply2048 INFO: Epoch 15 LR 0.000952 train_oa 100.00, val_oa 10.00, best val oa 10.00
+[04/25 10:41:49] ModelNet40Ply2048 INFO: Epoch 16 LR 0.000946 train_oa 100.00, val_oa 10.00, best val oa 10.00
+[04/25 10:41:49] ModelNet40Ply2048 INFO: Find a better ckpt @E17
+[04/25 10:41:49] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 0.00%
+CFD-AF-207-023-N: 0.00%
+CFD-AF-233-190-N: 62.50%
+CFD-AF-237-223-N: 0.00%
+CFD-AF-245-143-N: 62.50%
+CFD-AF-251-093-N: 0.00%
+CFD-AM-225-102-N: 0.00%
+CFD-AM-234-355-N: 0.00%
+CFD-BF-015-004-N: 0.00%
+CFD-BF-016-017-N: 0.00%
+E@17	OA: 12.50	mAcc: 12.50
+
+[04/25 10:41:49] ModelNet40Ply2048 INFO: Epoch 17 LR 0.000938 train_oa 100.00, val_oa 12.50, best val oa 12.50
+[04/25 10:41:49] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_2048_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_2048_10_neutral-modified_ckpt_best.pth
+[04/25 10:41:50] ModelNet40Ply2048 INFO: Epoch 18 LR 0.000930 train_oa 100.00, val_oa 10.00, best val oa 12.50
+[04/25 10:41:50] ModelNet40Ply2048 INFO: Epoch 19 LR 0.000922 train_oa 100.00, val_oa 10.00, best val oa 12.50
+[04/25 10:41:51] ModelNet40Ply2048 INFO: Epoch 20 LR 0.000914 train_oa 100.00, val_oa 10.00, best val oa 12.50
+[04/25 10:41:51] ModelNet40Ply2048 INFO: Epoch 21 LR 0.000905 train_oa 100.00, val_oa 10.00, best val oa 12.50
+[04/25 10:41:51] ModelNet40Ply2048 INFO: Epoch 22 LR 0.000895 train_oa 100.00, val_oa 10.00, best val oa 12.50
+[04/25 10:41:52] ModelNet40Ply2048 INFO: Epoch 23 LR 0.000885 train_oa 100.00, val_oa 10.00, best val oa 12.50
+[04/25 10:41:52] ModelNet40Ply2048 INFO: Epoch 24 LR 0.000875 train_oa 100.00, val_oa 10.00, best val oa 12.50
+[04/25 10:41:52] ModelNet40Ply2048 INFO: Epoch 25 LR 0.000865 train_oa 100.00, val_oa 10.00, best val oa 12.50
+[04/25 10:41:53] ModelNet40Ply2048 INFO: Epoch 26 LR 0.000854 train_oa 100.00, val_oa 12.50, best val oa 12.50
+[04/25 10:41:53] ModelNet40Ply2048 INFO: Find a better ckpt @E27
+[04/25 10:41:53] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 0.00%
+CFD-AF-207-023-N: 0.00%
+CFD-AF-233-190-N: 75.00%
+CFD-AF-237-223-N: 0.00%
+CFD-AF-245-143-N: 0.00%
+CFD-AF-251-093-N: 0.00%
+CFD-AM-225-102-N: 25.00%
+CFD-AM-234-355-N: 0.00%
+CFD-BF-015-004-N: 37.50%
+CFD-BF-016-017-N: 12.50%
+E@27	OA: 15.00	mAcc: 15.00
+
+[04/25 10:41:53] ModelNet40Ply2048 INFO: Epoch 27 LR 0.000842 train_oa 100.00, val_oa 15.00, best val oa 15.00
+[04/25 10:41:53] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_2048_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_2048_10_neutral-modified_ckpt_best.pth
+[04/25 10:41:53] ModelNet40Ply2048 INFO: Find a better ckpt @E28
+[04/25 10:41:53] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 0.00%
+CFD-AF-207-023-N: 0.00%
+CFD-AF-233-190-N: 62.50%
+CFD-AF-237-223-N: 0.00%
+CFD-AF-245-143-N: 0.00%
+CFD-AF-251-093-N: 12.50%
+CFD-AM-225-102-N: 50.00%
+CFD-AM-234-355-N: 0.00%
+CFD-BF-015-004-N: 50.00%
+CFD-BF-016-017-N: 25.00%
+E@28	OA: 20.00	mAcc: 20.00
+
+[04/25 10:41:53] ModelNet40Ply2048 INFO: Epoch 28 LR 0.000831 train_oa 100.00, val_oa 20.00, best val oa 20.00
+[04/25 10:41:54] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_2048_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_2048_10_neutral-modified_ckpt_best.pth
+[04/25 10:41:54] ModelNet40Ply2048 INFO: Find a better ckpt @E29
+[04/25 10:41:54] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 0.00%
+CFD-AF-207-023-N: 0.00%
+CFD-AF-233-190-N: 37.50%
+CFD-AF-237-223-N: 0.00%
+CFD-AF-245-143-N: 12.50%
+CFD-AF-251-093-N: 0.00%
+CFD-AM-225-102-N: 62.50%
+CFD-AM-234-355-N: 0.00%
+CFD-BF-015-004-N: 87.50%
+CFD-BF-016-017-N: 25.00%
+E@29	OA: 22.50	mAcc: 22.50
+
+[04/25 10:41:54] ModelNet40Ply2048 INFO: Epoch 29 LR 0.000819 train_oa 100.00, val_oa 22.50, best val oa 22.50
+[04/25 10:41:54] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_2048_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_2048_10_neutral-modified_ckpt_best.pth
+[04/25 10:41:54] ModelNet40Ply2048 INFO: Find a better ckpt @E30
+[04/25 10:41:54] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 0.00%
+CFD-AF-207-023-N: 0.00%
+CFD-AF-233-190-N: 37.50%
+CFD-AF-237-223-N: 25.00%
+CFD-AF-245-143-N: 25.00%
+CFD-AF-251-093-N: 0.00%
+CFD-AM-225-102-N: 62.50%
+CFD-AM-234-355-N: 0.00%
+CFD-BF-015-004-N: 62.50%
+CFD-BF-016-017-N: 62.50%
+E@30	OA: 27.50	mAcc: 27.50
+
+[04/25 10:41:54] ModelNet40Ply2048 INFO: Epoch 30 LR 0.000807 train_oa 100.00, val_oa 27.50, best val oa 27.50
+[04/25 10:41:54] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_2048_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_2048_10_neutral-modified_ckpt_best.pth
+[04/25 10:41:55] ModelNet40Ply2048 INFO: Find a better ckpt @E31
+[04/25 10:41:55] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 12.50%
+CFD-AF-207-023-N: 0.00%
+CFD-AF-233-190-N: 25.00%
+CFD-AF-237-223-N: 25.00%
+CFD-AF-245-143-N: 0.00%
+CFD-AF-251-093-N: 25.00%
+CFD-AM-225-102-N: 50.00%
+CFD-AM-234-355-N: 0.00%
+CFD-BF-015-004-N: 100.00%
+CFD-BF-016-017-N: 75.00%
+E@31	OA: 31.25	mAcc: 31.25
+
+[04/25 10:41:55] ModelNet40Ply2048 INFO: Epoch 31 LR 0.000794 train_oa 100.00, val_oa 31.25, best val oa 31.25
+[04/25 10:41:55] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_2048_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_2048_10_neutral-modified_ckpt_best.pth
+[04/25 10:41:55] ModelNet40Ply2048 INFO: Find a better ckpt @E32
+[04/25 10:41:55] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 12.50%
+CFD-AF-207-023-N: 0.00%
+CFD-AF-233-190-N: 25.00%
+CFD-AF-237-223-N: 50.00%
+CFD-AF-245-143-N: 12.50%
+CFD-AF-251-093-N: 25.00%
+CFD-AM-225-102-N: 75.00%
+CFD-AM-234-355-N: 0.00%
+CFD-BF-015-004-N: 75.00%
+CFD-BF-016-017-N: 62.50%
+E@32	OA: 33.75	mAcc: 33.75
+
+[04/25 10:41:55] ModelNet40Ply2048 INFO: Epoch 32 LR 0.000781 train_oa 100.00, val_oa 33.75, best val oa 33.75
+[04/25 10:41:55] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_2048_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_2048_10_neutral-modified_ckpt_best.pth
+[04/25 10:41:56] ModelNet40Ply2048 INFO: Epoch 33 LR 0.000768 train_oa 100.00, val_oa 31.25, best val oa 33.75
+[04/25 10:41:56] ModelNet40Ply2048 INFO: Find a better ckpt @E34
+[04/25 10:41:56] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 25.00%
+CFD-AF-207-023-N: 0.00%
+CFD-AF-233-190-N: 37.50%
+CFD-AF-237-223-N: 87.50%
+CFD-AF-245-143-N: 12.50%
+CFD-AF-251-093-N: 25.00%
+CFD-AM-225-102-N: 75.00%
+CFD-AM-234-355-N: 0.00%
+CFD-BF-015-004-N: 37.50%
+CFD-BF-016-017-N: 87.50%
+E@34	OA: 38.75	mAcc: 38.75
+
+[04/25 10:41:56] ModelNet40Ply2048 INFO: Epoch 34 LR 0.000755 train_oa 100.00, val_oa 38.75, best val oa 38.75
+[04/25 10:41:56] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_2048_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_2048_10_neutral-modified_ckpt_best.pth
+[04/25 10:41:56] ModelNet40Ply2048 INFO: Epoch 35 LR 0.000741 train_oa 100.00, val_oa 38.75, best val oa 38.75
+[04/25 10:41:57] ModelNet40Ply2048 INFO: Epoch 36 LR 0.000727 train_oa 100.00, val_oa 36.25, best val oa 38.75
+[04/25 10:41:57] ModelNet40Ply2048 INFO: Epoch 37 LR 0.000713 train_oa 100.00, val_oa 36.25, best val oa 38.75
+[04/25 10:41:58] ModelNet40Ply2048 INFO: Epoch 38 LR 0.000699 train_oa 100.00, val_oa 37.50, best val oa 38.75
+[04/25 10:41:58] ModelNet40Ply2048 INFO: Epoch 39 LR 0.000684 train_oa 100.00, val_oa 38.75, best val oa 38.75
+[04/25 10:41:58] ModelNet40Ply2048 INFO: Epoch 40 LR 0.000670 train_oa 100.00, val_oa 36.25, best val oa 38.75
+[04/25 10:41:59] ModelNet40Ply2048 INFO: Epoch 41 LR 0.000655 train_oa 100.00, val_oa 38.75, best val oa 38.75
+[04/25 10:41:59] ModelNet40Ply2048 INFO: Epoch 42 LR 0.000640 train_oa 100.00, val_oa 35.00, best val oa 38.75
+[04/25 10:42:00] ModelNet40Ply2048 INFO: Epoch 43 LR 0.000625 train_oa 100.00, val_oa 37.50, best val oa 38.75
+[04/25 10:42:00] ModelNet40Ply2048 INFO: Find a better ckpt @E44
+[04/25 10:42:00] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 12.50%
+CFD-AF-207-023-N: 12.50%
+CFD-AF-233-190-N: 37.50%
+CFD-AF-237-223-N: 75.00%
+CFD-AF-245-143-N: 25.00%
+CFD-AF-251-093-N: 50.00%
+CFD-AM-225-102-N: 62.50%
+CFD-AM-234-355-N: 12.50%
+CFD-BF-015-004-N: 37.50%
+CFD-BF-016-017-N: 100.00%
+E@44	OA: 42.50	mAcc: 42.50
+
+[04/25 10:42:00] ModelNet40Ply2048 INFO: Epoch 44 LR 0.000609 train_oa 100.00, val_oa 42.50, best val oa 42.50
+[04/25 10:42:00] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_2048_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_2048_10_neutral-modified_ckpt_best.pth
+[04/25 10:42:00] ModelNet40Ply2048 INFO: Find a better ckpt @E45
+[04/25 10:42:00] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 12.50%
+CFD-AF-207-023-N: 12.50%
+CFD-AF-233-190-N: 25.00%
+CFD-AF-237-223-N: 75.00%
+CFD-AF-245-143-N: 50.00%
+CFD-AF-251-093-N: 37.50%
+CFD-AM-225-102-N: 87.50%
+CFD-AM-234-355-N: 25.00%
+CFD-BF-015-004-N: 12.50%
+CFD-BF-016-017-N: 100.00%
+E@45	OA: 43.75	mAcc: 43.75
+
+[04/25 10:42:01] ModelNet40Ply2048 INFO: Epoch 45 LR 0.000594 train_oa 100.00, val_oa 43.75, best val oa 43.75
+[04/25 10:42:01] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_2048_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_2048_10_neutral-modified_ckpt_best.pth
+[04/25 10:42:01] ModelNet40Ply2048 INFO: Epoch 46 LR 0.000579 train_oa 100.00, val_oa 40.00, best val oa 43.75
+[04/25 10:42:01] ModelNet40Ply2048 INFO: Epoch 47 LR 0.000563 train_oa 100.00, val_oa 40.00, best val oa 43.75
+[04/25 10:42:02] ModelNet40Ply2048 INFO: Epoch 48 LR 0.000548 train_oa 100.00, val_oa 40.00, best val oa 43.75
+[04/25 10:42:02] ModelNet40Ply2048 INFO: Epoch 49 LR 0.000532 train_oa 100.00, val_oa 42.50, best val oa 43.75
+[04/25 10:42:03] ModelNet40Ply2048 INFO: Epoch 50 LR 0.000516 train_oa 100.00, val_oa 42.50, best val oa 43.75
+[04/25 10:42:03] ModelNet40Ply2048 INFO: Epoch 51 LR 0.000501 train_oa 100.00, val_oa 40.00, best val oa 43.75
+[04/25 10:42:03] ModelNet40Ply2048 INFO: Epoch 52 LR 0.000485 train_oa 100.00, val_oa 38.75, best val oa 43.75
+[04/25 10:42:04] ModelNet40Ply2048 INFO: Epoch 53 LR 0.000469 train_oa 100.00, val_oa 40.00, best val oa 43.75
+[04/25 10:42:04] ModelNet40Ply2048 INFO: Epoch 54 LR 0.000453 train_oa 100.00, val_oa 35.00, best val oa 43.75
+[04/25 10:42:05] ModelNet40Ply2048 INFO: Epoch 55 LR 0.000438 train_oa 100.00, val_oa 41.25, best val oa 43.75
+[04/25 10:42:06] ModelNet40Ply2048 INFO: Epoch 56 LR 0.000422 train_oa 100.00, val_oa 41.25, best val oa 43.75
+[04/25 10:42:07] ModelNet40Ply2048 INFO: Epoch 57 LR 0.000407 train_oa 100.00, val_oa 40.00, best val oa 43.75
+[04/25 10:42:08] ModelNet40Ply2048 INFO: Find a better ckpt @E58
+[04/25 10:42:08] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 12.50%
+CFD-AF-207-023-N: 25.00%
+CFD-AF-233-190-N: 37.50%
+CFD-AF-237-223-N: 50.00%
+CFD-AF-245-143-N: 37.50%
+CFD-AF-251-093-N: 37.50%
+CFD-AM-225-102-N: 87.50%
+CFD-AM-234-355-N: 25.00%
+CFD-BF-015-004-N: 37.50%
+CFD-BF-016-017-N: 100.00%
+E@58	OA: 45.00	mAcc: 45.00
+
+[04/25 10:42:08] ModelNet40Ply2048 INFO: Epoch 58 LR 0.000392 train_oa 100.00, val_oa 45.00, best val oa 45.00
+[04/25 10:42:08] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048\modelnet39ply2048_neutral_2048_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_2048_10_neutral-modified_ckpt_best.pth
+[04/25 10:42:09] ModelNet40Ply2048 INFO: Epoch 59 LR 0.000376 train_oa 100.00, val_oa 41.25, best val oa 45.00
+[04/25 10:42:10] ModelNet40Ply2048 INFO: Epoch 60 LR 0.000361 train_oa 100.00, val_oa 42.50, best val oa 45.00
+[04/25 10:42:11] ModelNet40Ply2048 INFO: Epoch 61 LR 0.000346 train_oa 100.00, val_oa 36.25, best val oa 45.00
+[04/25 10:42:11] ModelNet40Ply2048 INFO: Epoch 62 LR 0.000331 train_oa 100.00, val_oa 41.25, best val oa 45.00
+[04/25 10:42:12] ModelNet40Ply2048 INFO: Epoch 63 LR 0.000317 train_oa 100.00, val_oa 38.75, best val oa 45.00
+[04/25 10:42:12] ModelNet40Ply2048 INFO: Epoch 64 LR 0.000302 train_oa 100.00, val_oa 33.75, best val oa 45.00
+[04/25 10:42:13] ModelNet40Ply2048 INFO: Epoch 65 LR 0.000288 train_oa 100.00, val_oa 35.00, best val oa 45.00
+[04/25 10:42:14] ModelNet40Ply2048 INFO: Epoch 66 LR 0.000274 train_oa 100.00, val_oa 33.75, best val oa 45.00
+[04/25 10:42:15] ModelNet40Ply2048 INFO: Epoch 67 LR 0.000260 train_oa 100.00, val_oa 33.75, best val oa 45.00
+[04/25 10:42:16] ModelNet40Ply2048 INFO: Epoch 68 LR 0.000246 train_oa 100.00, val_oa 38.75, best val oa 45.00
+[04/25 10:42:17] ModelNet40Ply2048 INFO: Epoch 69 LR 0.000233 train_oa 100.00, val_oa 41.25, best val oa 45.00
+[04/25 10:42:18] ModelNet40Ply2048 INFO: Epoch 70 LR 0.000220 train_oa 100.00, val_oa 38.75, best val oa 45.00
+[04/25 10:42:19] ModelNet40Ply2048 INFO: Epoch 71 LR 0.000207 train_oa 100.00, val_oa 33.75, best val oa 45.00
+[04/25 10:42:20] ModelNet40Ply2048 INFO: Epoch 72 LR 0.000194 train_oa 100.00, val_oa 41.25, best val oa 45.00
+[04/25 10:42:21] ModelNet40Ply2048 INFO: Epoch 73 LR 0.000182 train_oa 100.00, val_oa 37.50, best val oa 45.00
+[04/25 10:42:22] ModelNet40Ply2048 INFO: Epoch 74 LR 0.000170 train_oa 100.00, val_oa 38.75, best val oa 45.00
+[04/25 10:42:23] ModelNet40Ply2048 INFO: Epoch 75 LR 0.000159 train_oa 100.00, val_oa 37.50, best val oa 45.00
+[04/25 10:42:24] ModelNet40Ply2048 INFO: Epoch 76 LR 0.000147 train_oa 100.00, val_oa 42.50, best val oa 45.00
+[04/25 10:42:25] ModelNet40Ply2048 INFO: Epoch 77 LR 0.000136 train_oa 100.00, val_oa 35.00, best val oa 45.00
+[04/25 10:42:26] ModelNet40Ply2048 INFO: Epoch 78 LR 0.000126 train_oa 100.00, val_oa 40.00, best val oa 45.00
+[04/25 10:42:27] ModelNet40Ply2048 INFO: Epoch 79 LR 0.000116 train_oa 100.00, val_oa 42.50, best val oa 45.00
+[04/25 10:42:28] ModelNet40Ply2048 INFO: Epoch 80 LR 0.000106 train_oa 100.00, val_oa 37.50, best val oa 45.00
+[04/25 10:42:29] ModelNet40Ply2048 INFO: Epoch 81 LR 0.000096 train_oa 100.00, val_oa 37.50, best val oa 45.00
+[04/25 10:42:30] ModelNet40Ply2048 INFO: Epoch 82 LR 0.000087 train_oa 100.00, val_oa 40.00, best val oa 45.00
+[04/25 10:42:31] ModelNet40Ply2048 INFO: Epoch 83 LR 0.000079 train_oa 100.00, val_oa 41.25, best val oa 45.00
+[04/25 10:42:32] ModelNet40Ply2048 INFO: Epoch 84 LR 0.000071 train_oa 100.00, val_oa 41.25, best val oa 45.00
+[04/25 10:42:33] ModelNet40Ply2048 INFO: Epoch 85 LR 0.000063 train_oa 100.00, val_oa 35.00, best val oa 45.00
+[04/25 10:42:34] ModelNet40Ply2048 INFO: Epoch 86 LR 0.000055 train_oa 100.00, val_oa 37.50, best val oa 45.00
+[04/25 10:42:35] ModelNet40Ply2048 INFO: Epoch 87 LR 0.000049 train_oa 100.00, val_oa 36.25, best val oa 45.00
+[04/25 10:42:36] ModelNet40Ply2048 INFO: Epoch 88 LR 0.000042 train_oa 100.00, val_oa 38.75, best val oa 45.00
+[04/25 10:42:37] ModelNet40Ply2048 INFO: Epoch 89 LR 0.000036 train_oa 100.00, val_oa 35.00, best val oa 45.00
+[04/25 10:42:38] ModelNet40Ply2048 INFO: Epoch 90 LR 0.000031 train_oa 100.00, val_oa 40.00, best val oa 45.00
+[04/25 10:42:39] ModelNet40Ply2048 INFO: Epoch 91 LR 0.000025 train_oa 100.00, val_oa 38.75, best val oa 45.00
+[04/25 10:42:40] ModelNet40Ply2048 INFO: Epoch 92 LR 0.000021 train_oa 100.00, val_oa 35.00, best val oa 45.00
+[04/25 10:42:41] ModelNet40Ply2048 INFO: Epoch 93 LR 0.000017 train_oa 100.00, val_oa 38.75, best val oa 45.00
+[04/25 10:42:42] ModelNet40Ply2048 INFO: Epoch 94 LR 0.000013 train_oa 100.00, val_oa 40.00, best val oa 45.00
+[04/25 10:42:43] ModelNet40Ply2048 INFO: Epoch 95 LR 0.000010 train_oa 100.00, val_oa 38.75, best val oa 45.00
+[04/25 10:42:44] ModelNet40Ply2048 INFO: Epoch 96 LR 0.000007 train_oa 100.00, val_oa 33.75, best val oa 45.00
+[04/25 10:42:45] ModelNet40Ply2048 INFO: Epoch 97 LR 0.000005 train_oa 100.00, val_oa 38.75, best val oa 45.00
+[04/25 10:42:46] ModelNet40Ply2048 INFO: Epoch 98 LR 0.000003 train_oa 100.00, val_oa 38.75, best val oa 45.00
+[04/25 10:42:47] ModelNet40Ply2048 INFO: Epoch 99 LR 0.000002 train_oa 100.00, val_oa 40.00, best val oa 45.00
+[04/25 10:42:48] ModelNet40Ply2048 INFO: Epoch 100 LR 0.000001 train_oa 100.00, val_oa 41.25, best val oa 45.00
+[04/25 10:42:48] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 25.00%
+CFD-AF-207-023-N: 25.00%
+CFD-AF-233-190-N: 37.50%
+CFD-AF-237-223-N: 37.50%
+CFD-AF-245-143-N: 0.00%
+CFD-AF-251-093-N: 37.50%
+CFD-AM-225-102-N: 50.00%
+CFD-AM-234-355-N: 50.00%
+CFD-BF-015-004-N: 0.00%
+CFD-BF-016-017-N: 100.00%
+E@58	OA: 36.25	mAcc: 36.25
+
+[04/25 10:42:48] ModelNet40Ply2048 INFO: Successful Loading the ckpt from log/modelnet40ply2048\modelnet39ply2048_neutral_2048_10_neutral-modified\checkpoint\modelnet39ply2048_neutral_2048_10_neutral-modified_ckpt_best.pth
+[04/25 10:42:48] ModelNet40Ply2048 INFO: ckpts @ 58 epoch( {'best_val': 45.0} )
+[04/25 10:42:49] ModelNet40Ply2048 INFO: 
+Classes	Acc
+CFD-AF-201-060-N: 12.50%
+CFD-AF-207-023-N: 12.50%
+CFD-AF-233-190-N: 37.50%
+CFD-AF-237-223-N: 50.00%
+CFD-AF-245-143-N: 50.00%
+CFD-AF-251-093-N: 37.50%
+CFD-AM-225-102-N: 75.00%
+CFD-AM-234-355-N: 37.50%
+CFD-BF-015-004-N: 12.50%
+CFD-BF-016-017-N: 87.50%
+E@58	OA: 41.25	mAcc: 41.25
+

@@ -1,0 +1,140 @@
+[04/17 13:25:21] ModelNet40Ply2048 INFO: dist_url: tcp://localhost:8888
+dist_backend: nccl
+multiprocessing_distributed: False
+ngpus_per_node: 1
+world_size: 1
+launcher: mp
+local_rank: 0
+use_gpu: True
+seed: 7178
+epoch: 0
+epochs: 600
+ignore_index: None
+val_fn: validate
+deterministic: False
+sync_bn: False
+criterion_args:
+  NAME: SmoothCrossEntropy
+  label_smoothing: 0.2
+use_mask: False
+grad_norm_clip: 1
+layer_decay: 0
+step_per_update: 1
+start_epoch: 1
+sched_on_epoch: True
+wandb:
+  use_wandb: False
+  project: PointNeXt-ModelNet40Ply2048
+  tags: ['modelnet40ply2048', 'train', 'pointnext-s', 'ngpus1', 'seed7178']
+  name: modelnet40ply2048-train-pointnext-s-ngpus1-seed7178-20240417-132521-hPBWvFenijoYieo3YmmSkV
+use_amp: False
+use_voting: False
+val_freq: 1
+resume: False
+test: False
+finetune: False
+mode: train
+logname: None
+load_path: None
+print_freq: 10
+save_freq: -1
+root_dir: log/modelnet40ply2048
+pretrained_path: None
+datatransforms:
+  train: ['PointsToTensor', 'PointCloudScaleAndTranslate']
+  val: ['PointsToTensor']
+  vote: ['PointCloudScaleAndTranslate']
+  kwargs:
+    shift: [0.2, 0.2, 0.2]
+feature_keys: pos
+num_points: 1024
+dataset:
+  common:
+    NAME: ModelNet40Ply2048
+    data_dir: ./data/ModelNet40Ply2048
+  train:
+    split: train
+    num_points: 1024
+  val:
+    split: test
+    num_points: 1024
+batch_size: 32
+dataloader:
+  num_workers: 6
+num_classes: 40
+sched: cosine
+warmup_epochs: 0
+min_lr: None
+lr: 0.001
+optimizer:
+  NAME: adamw
+  weight_decay: 0.05
+log_dir: log/modelnet40ply2048\modelnet40ply2048-train-pointnext-s-ngpus1-seed7178-20240417-132521-hPBWvFenijoYieo3YmmSkV
+val_batch_size: 64
+model:
+  NAME: BaseCls
+  encoder_args:
+    NAME: PointNextEncoder
+    blocks: [1, 1, 1, 1, 1, 1]
+    strides: [1, 2, 2, 2, 2, 1]
+    width: 32
+    in_channels: 3
+    radius: 0.15
+    radius_scaling: 1.5
+    sa_layers: 2
+    sa_use_res: True
+    nsample: 32
+    expansion: 4
+    aggr_args:
+      feature_type: dp_fj
+      reduction: max
+    group_args:
+      NAME: ballquery
+      normalize_dp: True
+    conv_args:
+      order: conv-norm-act
+    act_args:
+      act: relu
+    norm_args:
+      norm: bn
+  cls_args:
+    NAME: ClsHead
+    num_classes: 40
+    mlps: [512, 256]
+    norm_args:
+      norm: bn1d
+-f: C:\Users\pojzi\AppData\Roaming\jupyter\runtime\kernel-6766499a-fcae-4111-a22d-efc3f2496344.json
+rank: 0
+distributed: False
+mp: False
+task_name: modelnet40ply2048
+exp_name: pointnext-s
+opts: -f-C:\Users\pojzi\AppData\Roaming\jupyter\runtime\kernel-6766499a-fcae-4111-a22d-efc3f2496344.json
+run_name: modelnet40ply2048-train-pointnext-s-ngpus1-seed7178-20240417-132521-hPBWvFenijoYieo3YmmSkV
+run_dir: log/modelnet40ply2048\modelnet40ply2048-train-pointnext-s-ngpus1-seed7178-20240417-132521-hPBWvFenijoYieo3YmmSkV
+exp_dir: log/modelnet40ply2048\modelnet40ply2048-train-pointnext-s-ngpus1-seed7178-20240417-132521-hPBWvFenijoYieo3YmmSkV
+ckpt_dir: log/modelnet40ply2048\modelnet40ply2048-train-pointnext-s-ngpus1-seed7178-20240417-132521-hPBWvFenijoYieo3YmmSkV\checkpoint
+log_path: log
+cfg_path: log/modelnet40ply2048\modelnet40ply2048-train-pointnext-s-ngpus1-seed7178-20240417-132521-hPBWvFenijoYieo3YmmSkV\cfg.yaml
+[04/17 13:25:21] ModelNet40Ply2048 INFO: radius: [[0.15], [0.15], [0.22499999999999998], [0.33749999999999997], [0.50625], [0.7593749999999999]],
+ nsample: [[32], [32], [32], [32], [32], [32]]
+[04/17 13:25:21] ModelNet40Ply2048 INFO: NAME: ballquery
+normalize_dp: True
+radius: 0.15
+nsample: 32
+[04/17 13:25:21] ModelNet40Ply2048 INFO: NAME: ballquery
+normalize_dp: True
+radius: 0.22499999999999998
+nsample: 32
+[04/17 13:25:21] ModelNet40Ply2048 INFO: NAME: ballquery
+normalize_dp: True
+radius: 0.33749999999999997
+nsample: 32
+[04/17 13:25:21] ModelNet40Ply2048 INFO: NAME: ballquery
+normalize_dp: True
+radius: 0.50625
+nsample: 32
+[04/17 13:25:21] ModelNet40Ply2048 INFO: NAME: ballquery
+normalize_dp: True
+radius: None
+nsample: None
